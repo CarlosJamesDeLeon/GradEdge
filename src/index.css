@@ -4,6 +4,8 @@
 
 @layer base {
   body {
-    @apply bg-background text-textPrimary;
+    background-color: #F8FAFC;
+    color: #002147;
+    @apply antialiased;
   }
 }

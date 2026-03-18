@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Tag, Plus, Search, Filter } from 'lucide-react';
+import { Plus, Search, Filter, ShoppingBag } from 'lucide-react';
+import { useOutletContext } from 'react-router-dom';
+import { cn } from '../components/Layout';
 
 const MOCK_ITEMS = [
   {
@@ -9,7 +11,7 @@ const MOCK_ITEMS = [
     condition: 'Like New',
     seller: 'Alex J.',
     category: 'Textbooks',
-    image: 'bg-indigo-900/50'
+    image: 'bg-[#002147]/5'
   },
   {
     id: 2,
@@ -18,7 +20,7 @@ const MOCK_ITEMS = [
     condition: 'Good',
     seller: 'Sam R.',
     category: 'Dorm Gear',
-    image: 'bg-emerald-900/50'
+    image: 'bg-[#002147]/10'
   },
   {
     id: 3,
@@ -27,7 +29,7 @@ const MOCK_ITEMS = [
     condition: 'Acceptable',
     seller: 'Jordan P.',
     category: 'Textbooks',
-    image: 'bg-rose-900/50'
+    image: 'bg-[#FFD700]/5'
   },
   {
     id: 4,
@@ -36,11 +38,12 @@ const MOCK_ITEMS = [
     condition: 'Like New',
     seller: 'Taylor M.',
     category: 'Dorm Gear',
-    image: 'bg-amber-900/50'
+    image: 'bg-[#FFD700]/10'
   }
 ];
 
 const Marketplace: React.FC = () => {
+  const { isAnonymous } = useOutletContext<{ isAnonymous: boolean }>();
   const [activeCategory, setActiveCategory] = useState('All');
 
   const categories = ['All', 'Textbooks', 'Dorm Gear', 'Electronics', 'Clothing'];
@@ -50,47 +53,68 @@ const Marketplace: React.FC = () => {
     : MOCK_ITEMS.filter(item => item.category === activeCategory);
 
   return (
-    <div className="w-full pb-20 md:pb-0">
-      <header className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-end space-y-4 md:space-y-0">
+    <div className="w-full pb-20 md:pb-0 font-sans">
+      <header className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end space-y-6 md:space-y-0">
         <div>
-          <h1 className="text-3xl font-extrabold text-white mb-2">Campus Market</h1>
-          <p className="text-textSecondary">Buy and sell items within your university.</p>
+          <div className="flex items-center space-x-2 mb-2">
+              <div className="h-2 w-8 bg-[#FFD700] rounded-full" />
+              <span className="text-[#FFD700] font-black uppercase tracking-widest text-xs font-sans">Campus Trade</span>
+          </div>
+          <h1 className={cn(
+            "text-4xl font-black transition-colors",
+            isAnonymous ? "text-slate-700" : "text-[#002147]"
+          )}>Campus Marketplace</h1>
+          <p className={cn("mt-2 font-medium", isAnonymous ? "text-slate-400" : "text-[#002147]/60")}>Secure trading exclusive to your university peer network.</p>
         </div>
-        <button className="bg-primary hover:bg-blue-600 text-white px-5 py-2.5 rounded-xl font-medium flex items-center space-x-2 transition-all shadow-lg shadow-primary/20 whitespace-nowrap">
-          <Plus className="h-5 w-5" />
-          <span>Sell an Item</span>
+        <button className={cn(
+            "px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center space-x-3 transition-all shadow-2xl active:scale-95",
+            isAnonymous ? "bg-slate-600 text-white" : "bg-[#002147] text-white hover:bg-black"
+        )}>
+          <Plus className="h-4 w-4" />
+          <span>Post an Item</span>
         </button>
       </header>
 
       {/* Filters & Search */}
-      <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-8">
+      <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-10">
         <div className="relative flex-1">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-gray-500" />
+          <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none text-gray-400">
+            <Search className="h-5 w-5" />
           </div>
           <input
             type="text"
-            placeholder="Search items..."
-            className="block w-full pl-11 pr-4 py-3 bg-surface border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+            placeholder="Search verified listings..."
+            className={cn(
+                "block w-full pl-14 pr-6 py-4 border-2 font-bold transition-all focus:outline-none rounded-3xl",
+                isAnonymous 
+                    ? "bg-slate-200/50 border-slate-200 text-slate-700 placeholder-slate-400" 
+                    : "bg-white border-gray-100 text-[#002147] placeholder-gray-400 focus:border-[#FFD700]/30"
+            )}
           />
         </div>
-        <button className="flex items-center justify-center space-x-2 bg-surface border border-gray-800 px-6 py-3 rounded-xl text-textSecondary hover:text-white hover:bg-gray-800 transition-colors">
-          <Filter className="h-5 w-5" />
-          <span>Filters</span>
+        <button className={cn(
+            "flex items-center justify-center space-x-2 px-8 py-4 border-2 rounded-3xl font-black text-xs uppercase tracking-widest transition-all",
+            isAnonymous 
+                ? "bg-white border-slate-200 text-slate-500" 
+                : "bg-white border-gray-100 text-[#002147]/60 hover:bg-gray-50"
+        )}>
+          <Filter className="h-4 w-4" />
+          <span>Advanced Filters</span>
         </button>
       </div>
 
       {/* Categories */}
-      <div className="flex space-x-2 overflow-x-auto pb-4 mb-4 scrollbar-hide">
+      <div className="flex space-x-3 overflow-x-auto pb-6 mb-6 scrollbar-hide">
         {categories.map(category => (
           <button
             key={category}
             onClick={() => setActiveCategory(category)}
-            className={`px-4 py-2 rounded-full whitespace-nowrap text-sm font-medium transition-colors ${
-              activeCategory === category 
-                ? 'bg-primary text-white' 
-                : 'bg-surface border border-gray-800 text-textSecondary hover:text-white hover:bg-gray-800'
-            }`}
+            className={cn(
+                "px-6 py-3 rounded-2xl whitespace-nowrap text-xs font-black uppercase tracking-widest transition-all border-2",
+                activeCategory === category 
+                    ? isAnonymous ? 'bg-slate-600 border-slate-600 text-white shadow-xl' : 'bg-[#FFD700] border-[#FFD700] text-[#002147] shadow-xl' 
+                    : isAnonymous ? 'bg-slate-100 border-slate-200 text-slate-500 hover:border-slate-300' : 'bg-white border-gray-100 text-[#002147]/40 hover:border-gray-200'
+            )}
           >
             {category}
           </button>
@@ -98,26 +122,32 @@ const Marketplace: React.FC = () => {
       </div>
 
       {/* Items Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {filteredItems.map(item => (
-          <div key={item.id} className="bg-surface border border-gray-800 rounded-2xl overflow-hidden hover:border-gray-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer flex flex-col">
+          <div key={item.id} className={cn(
+              "rounded-3xl overflow-hidden border transition-all duration-300 group cursor-pointer flex flex-col hover:shadow-2xl hover:-translate-y-2",
+              isAnonymous ? "bg-slate-50 border-slate-200" : "bg-white border-gray-100"
+          )}>
             {/* Image Placeholder */}
-            <div className={`h-48 w-full ${item.image} relative flex items-center justify-center`}>
-               <Tag className="h-12 w-12 text-white/20" />
-               <div className="absolute top-3 right-3 bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-lg text-white font-bold text-sm border border-white/10">
+            <div className={`h-56 w-full ${item.image} relative flex items-center justify-center transition-transform group-hover:scale-105 duration-500`}>
+               <ShoppingBag className={cn("h-16 w-16 opacity-10", isAnonymous ? "text-slate-600" : "text-[#002147]")} />
+               <div className="absolute bottom-4 left-4 bg-white px-4 py-2 rounded-2xl text-[#002147] font-black text-sm shadow-xl border border-gray-100">
                  ${item.price}
                </div>
             </div>
             
-            <div className="p-5 flex-1 flex flex-col">
-              <div className="flex justify-between items-start mb-2">
-                <span className="text-xs font-semibold text-primary uppercase tracking-wider">{item.category}</span>
+            <div className="p-6 flex-1 flex flex-col">
+              <div className="flex justify-between items-start mb-3">
+                <span className="text-[10px] font-black text-[#FFD700] uppercase tracking-[0.2em]">{item.category}</span>
               </div>
-              <h3 className="text-lg font-bold text-white mb-2 line-clamp-2 flex-1">{item.title}</h3>
+              <h3 className={cn("text-xl font-bold mb-6 line-clamp-2 flex-1", isAnonymous ? "text-slate-700" : "text-[#002147]")}>{item.title}</h3>
               
-              <div className="mt-4 pt-4 border-t border-gray-800/50 flex justify-between items-center text-sm text-textSecondary">
+              <div className={cn(
+                  "mt-4 pt-4 border-t flex justify-between items-center text-xs font-black uppercase tracking-widest",
+                   isAnonymous ? "border-slate-200 text-slate-400" : "border-gray-50 text-gray-400"
+              )}>
                 <span>{item.condition}</span>
-                <span>{item.seller}</span>
+                <span className={cn(isAnonymous ? "text-slate-500" : "text-[#002147]")}>{item.seller}</span>
               </div>
             </div>
           </div>

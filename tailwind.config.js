@@ -8,13 +8,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#0f172a',
-        surface: '#1e293b',
-        primary: '#3b82f6',
-        secondary: '#64748b',
-        textPrimary: '#f8fafc',
-        textSecondary: '#94a3b8'
-      }
+        'oxford-blue': '#002147',
+        'academic-gold': '#FFD700',
+        'off-white': '#F8FAFC',
+        'ghost-grey': '#94A3B8',
+        'background': '#F8FAFC',
+        'surface': '#FFFFFF',
+        'primary': '#002147',
+        'secondary': '#FFD700',
+        'text-primary': '#002147',
+        'text-secondary': '#64748B'
+      },
+      fontFamily: {
+        sans: ['Inter', 'Roboto', 'sans-serif'],
+      },
     },
   },
   plugins: [],
