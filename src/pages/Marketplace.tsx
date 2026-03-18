@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Plus, Search, Filter, ShoppingBag } from 'lucide-react';
 import { useOutletContext } from 'react-router-dom';
 import { cn } from '../components/Layout';
+import Avatar from '../components/Avatar';
 
 const MOCK_ITEMS = [
   {
@@ -147,7 +148,10 @@ const Marketplace: React.FC = () => {
                    isAnonymous ? "border-slate-200 text-slate-400" : "border-gray-50 text-gray-400"
               )}>
                 <span>{item.condition}</span>
-                <span className={cn(isAnonymous ? "text-slate-500" : "text-[#002147]")}>{item.seller}</span>
+                <div className="flex items-center space-x-2">
+                   <Avatar name={item.seller} isAnonymous={isAnonymous} size="sm" />
+                   <span className={cn(isAnonymous ? "text-slate-500" : "text-[#002147]")}>{item.seller}</span>
+                </div>
               </div>
             </div>
           </div>

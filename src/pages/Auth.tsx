@@ -102,7 +102,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-14 pr-6 py-5 bg-white border-2 border-gray-100 rounded-3xl text-[#002147] font-bold focus:outline-none focus:border-[#002147] focus:ring-4 focus:ring-[#002147]/10 transition-all text-lg"
+                  className="block w-full pl-14 pr-6 py-5 bg-white border-2 border-gray-100 rounded-3xl text-slate-900 placeholder-slate-400 font-bold focus:outline-none focus:border-[#002147] focus:ring-4 focus:ring-[#002147]/10 transition-all text-lg"
                   placeholder="name@university.edu"
                 />
               </div>
@@ -121,7 +121,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-14 pr-6 py-5 bg-white border-2 border-gray-100 rounded-3xl text-[#002147] font-bold focus:outline-none focus:border-[#002147] focus:ring-4 focus:ring-[#002147]/10 transition-all text-lg"
+                  className="block w-full pl-14 pr-6 py-5 bg-white border-2 border-gray-100 rounded-3xl text-slate-900 placeholder-slate-400 font-bold focus:outline-none focus:border-[#002147] focus:ring-4 focus:ring-[#002147]/10 transition-all text-lg"
                   placeholder="••••••••"
                 />
               </div>

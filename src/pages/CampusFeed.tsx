@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Share2, MessageSquare, Image as ImageIcon, Send, ShieldCheck, TrendingUp, Star, Users, Briefcase } from 'lucide-react';
+import { Share2, MessageSquare, ShieldCheck, Star, Users, Briefcase } from 'lucide-react';
 import { useOutletContext } from 'react-router-dom';
 import { cn } from '../components/Layout';
+import Avatar from '../components/Avatar';
+import IdentityBox from '../components/IdentityBox';
 
 type SubjectTab = 'cs' | 'math' | 'physics';
 
@@ -9,6 +11,7 @@ const MOCK_THREADS = [
   {
     id: 1,
     author: 'Sarah Jenkins',
+    isAnonymous: false,
     major: 'Computer Science',
     time: '2 hours ago',
     subject: 'Data Structures (CS301)',
@@ -21,6 +24,7 @@ const MOCK_THREADS = [
   {
     id: 2,
     author: 'Michael Chen',
+    isAnonymous: true,
     major: 'Business Admin',
     time: '4 hours ago',
     subject: 'Principles of Marketing',
@@ -35,7 +39,6 @@ const MOCK_THREADS = [
 const CampusFeed: React.FC = () => {
   const { isAnonymous } = useOutletContext<{ isAnonymous: boolean }>();
   const [activeTab, setActiveTab] = useState<SubjectTab>('cs');
-  const [postContent, setPostContent] = useState('');
 
   const subjects: { id: SubjectTab; label: string }[] = [
     { id: 'cs', label: 'Computer Science' },
@@ -74,46 +77,13 @@ const CampusFeed: React.FC = () => {
           </div>
         </header>
 
-        {/* Create Post */}
-        <div className={cn(
-            "rounded-3xl p-6 border transition-all duration-500 mb-10",
-            isAnonymous ? "bg-slate-200/50 border-slate-200" : "bg-white border-gray-100 shadow-sm"
-        )}>
-          <div className="flex space-x-4">
-            <div className={cn(
-                "h-12 w-12 rounded-2xl flex-shrink-0 flex items-center justify-center transition-colors",
-                isAnonymous ? "bg-slate-400" : "bg-[#002147]"
-            )}>
-                {isAnonymous ? <ShieldCheck className="text-white h-6 w-6" /> : <TrendingUp className="text-[#FFD700] h-6 w-6" />}
-            </div>
-            <div className="flex-1">
-              <textarea
-                value={postContent}
-                onChange={(e) => setPostContent(e.target.value)}
-                placeholder={isAnonymous ? "Post anonymously to the hub..." : "Share an academic insight or question..."}
-                className="w-full bg-transparent border-none text-[#002147] placeholder-gray-400 focus:ring-0 resize-none min-h-[100px] text-lg font-medium"
-              />
-              <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
-                <div className="flex space-x-2">
-                  <button className="p-3 text-gray-400 hover:text-[#002147] hover:bg-gray-100 rounded-xl transition-all">
-                    <ImageIcon className="h-5 w-5" />
-                  </button>
-                </div>
-                <button
-                  disabled={!postContent.trim()}
-                  className={cn(
-                    "px-8 py-3 rounded-2xl font-black flex items-center space-x-2 transition-all shadow-lg",
-                    isAnonymous 
-                        ? "bg-slate-600 text-white hover:bg-slate-700 disabled:bg-slate-300" 
-                        : "bg-[#002147] text-white hover:bg-blue-900 disabled:bg-gray-200"
-                  )}
-                >
-                  <span>Post Subject</span>
-                  <Send className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-          </div>
+        {/* Identity-Aware Post Box */}
+        <div className="mb-10">
+          <IdentityBox 
+            userName="Janet Doe" 
+            initialAnonymous={isAnonymous}
+            onPost={(content, anon) => console.log('Posting:', { content, anon })}
+          />
         </div>
 
         {/* Feed Stream */}
@@ -125,16 +95,17 @@ const CampusFeed: React.FC = () => {
             )}>
               <div className="flex justify-between items-start mb-6">
                 <div className="flex space-x-4">
-                  <div className={cn(
-                    "h-12 w-12 rounded-2xl flex-shrink-0 transition-all",
-                    isAnonymous ? "bg-slate-300" : "bg-gray-200"
-                  )} />
+                  <Avatar 
+                    name={thread.author} 
+                    isAnonymous={thread.isAnonymous} 
+                    size="lg"
+                  />
                   <div>
                     <h3 className="font-bold text-[#002147] text-lg">
-                        {isAnonymous ? "Anonymous Peer" : thread.author}
+                        {thread.isAnonymous ? "Anonymous Member" : thread.author}
                     </h3>
                     <div className="flex items-center text-sm font-semibold text-gray-400 space-x-3 mt-1 uppercase tracking-wider">
-                      <span>{thread.subject}</span>
+                      <span>{thread.isAnonymous ? "Safe Haven Poster" : thread.subject}</span>
                       <span>•</span>
                       <span>{thread.time}</span>
                     </div>

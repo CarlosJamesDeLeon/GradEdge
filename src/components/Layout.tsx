@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, Outlet, Navigate } from 'react-router-dom';
 import { ShoppingBag, LogOut, BookOpen, GraduationCap, Shield, ShieldOff } from 'lucide-react';
+import Avatar from './Avatar';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -133,10 +134,11 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
               </button>
             </div>
             
-            <div className={cn(
-              "h-10 w-10 rounded-full border-2 transition-colors",
-              isAnonymous ? "bg-slate-300 border-white shadow-inner" : "bg-[#002147] border-[#FFD700]/20"
-            )} />
+            <Avatar 
+                name="Janet Doe" 
+                isAnonymous={isAnonymous} 
+                className={isAnonymous ? "border-white" : "border-[#FFD700]/20"}
+            />
           </div>
         </header>
 

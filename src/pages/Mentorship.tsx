@@ -1,7 +1,8 @@
 import React from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { cn } from '../components/Layout';
-import { GraduationCap, Star, ArrowRight } from 'lucide-react';
+import { Star, ArrowRight } from 'lucide-react';
+import Avatar from '../components/Avatar';
 
 const MentorshipBridge: React.FC = () => {
     const { isAnonymous } = useOutletContext<{ isAnonymous: boolean }>();
@@ -33,12 +34,14 @@ const MentorshipBridge: React.FC = () => {
                         isAnonymous ? "bg-slate-50 border-slate-200" : "bg-white border-gray-100"
                     )}>
                         <div className="flex items-center space-x-4 mb-8">
-                            <div className="h-16 w-16 rounded-3xl bg-[#002147]/5 flex items-center justify-center">
-                                <GraduationCap className="h-8 w-8 text-[#002147]/20" />
-                            </div>
-                            <div>
-                                <h3 className={cn("text-xl font-black", isAnonymous ? "text-slate-700" : "text-[#002147]")}>{mentor.name}</h3>
-                                <p className="text-[#FFD700] font-bold uppercase tracking-widest text-[10px] mt-1">{mentor.role}</p>
+                            <Avatar 
+                                name={mentor.name} 
+                                isAnonymous={isAnonymous} 
+                                size="lg"
+                            />
+                            <div className="flex flex-col justify-center">
+                                <h3 className={cn("text-xl font-black leading-tight", isAnonymous ? "text-slate-700" : "text-[#002147]")}>{mentor.name}</h3>
+                                <p className="text-[#FFD700] font-bold uppercase tracking-widest text-[10px] mt-1.5">{mentor.role}</p>
                             </div>
                         </div>
 
