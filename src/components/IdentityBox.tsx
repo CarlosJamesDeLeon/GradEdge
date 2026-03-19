@@ -28,7 +28,7 @@ const IdentityBox: React.FC<IdentityBoxProps> = ({
     <div className={cn(
       "w-full bg-white rounded-[2rem] border-2 transition-all duration-500 overflow-hidden shadow-sm hover:shadow-xl",
       isAnonymous 
-        ? "border-[#002147]/20 bg-gradient-to-br from-white to-[#002147]/5" 
+        ? "border-[#002147]/30 bg-gradient-to-br from-white to-[#002147]/5 shadow-[0_0_25px_rgba(0,33,71,0.15)]" 
         : "border-gray-100 bg-white"
     )}>
       {/* Header Info */}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Share2, MessageSquare, ShieldCheck, Star, Users, Briefcase } from 'lucide-react';
+import { Share2, MessageSquare, ShieldCheck, Star, Users, Briefcase, ChevronDown } from 'lucide-react';
 import { useOutletContext } from 'react-router-dom';
 import { cn } from '../components/Layout';
 import Avatar from '../components/Avatar';
@@ -39,6 +39,8 @@ const MOCK_THREADS = [
 const CampusFeed: React.FC = () => {
   const { isAnonymous } = useOutletContext<{ isAnonymous: boolean }>();
   const [activeTab, setActiveTab] = useState<SubjectTab>('cs');
+  const [selectedCourse, setSelectedCourse] = useState<string>('');
+  const [selectedYear, setSelectedYear] = useState<string>('');
 
   const subjects: { id: SubjectTab; label: string }[] = [
     { id: 'cs', label: 'Computer Science' },
@@ -58,6 +60,58 @@ const CampusFeed: React.FC = () => {
             "text-4xl font-black transition-colors",
             isAnonymous ? "text-slate-700" : "text-[#002147]"
           )}>Subject Threads</h1>
+
+          {/* Specificity Layer: Sub-Navigation Row */}
+          <div className="mt-8 flex flex-col md:flex-row md:items-center gap-4">
+            <div className="flex gap-4">
+              <div className="relative group">
+                <select
+                  value={selectedCourse}
+                  onChange={(e) => setSelectedCourse(e.target.value)}
+                  className="appearance-none bg-white border-2 border-[#002147] text-[#002147] px-6 py-3 pr-12 rounded-2xl font-bold text-sm focus:outline-none focus:ring-2 focus:ring-[#FFD700] transition-all cursor-pointer"
+                >
+                  <option value="">Select Course</option>
+                  <option value="BSCS">BSCS</option>
+                  <option value="BSIT">BSIT</option>
+                  <option value="BSCE">BSCE</option>
+                  <option value="BSME">BSME</option>
+                </select>
+                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#002147] pointer-events-none transition-transform group-hover:translate-y-[-40%]" />
+              </div>
+
+              <div className="relative group">
+                <select
+                  value={selectedYear}
+                  onChange={(e) => setSelectedYear(e.target.value)}
+                  className="appearance-none bg-white border-2 border-[#002147] text-[#002147] px-6 py-3 pr-12 rounded-2xl font-bold text-sm focus:outline-none focus:ring-2 focus:ring-[#FFD700] transition-all cursor-pointer"
+                >
+                  <option value="">Select Year</option>
+                  <option value="1st Year">1st Year</option>
+                  <option value="2nd Year">2nd Year</option>
+                  <option value="3rd Year">3rd Year</option>
+                  <option value="4th Year">4th Year</option>
+                  <option value="All Years">All Years</option>
+                </select>
+                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#002147] pointer-events-none transition-transform group-hover:translate-y-[-40%]" />
+              </div>
+            </div>
+
+            {/* Breadcrumb indicator */}
+            {(selectedCourse || selectedYear) && (
+              <div className="flex items-center space-x-2 text-xs font-black uppercase tracking-widest animate-in fade-in slide-in-from-left-4">
+                {selectedCourse && (
+                  <span className={cn(
+                    "px-3 py-1 rounded-lg",
+                    selectedCourse ? "bg-[#FFD700]/10 text-[#002147]" : "text-gray-400"
+                  )}>{selectedCourse}</span>
+                )}
+                {selectedCourse && selectedYear && <span className="text-[#FFD700] mx-1">&gt;</span>}
+                {selectedYear && (
+                  <span className="text-[#FFD700]">{selectedYear}</span>
+                )}
+              </div>
+            )}
+          </div>
           
           <div className="flex space-x-2 mt-8 overflow-x-auto pb-2 scrollbar-hide">
             {subjects.map((sub) => (
@@ -158,10 +212,7 @@ const CampusFeed: React.FC = () => {
       {/* Right Sidebar Widgets */}
       <div className="w-full lg:w-80 space-y-8">
           {/* Teacher Rating Widget */}
-          <div className={cn(
-              "rounded-3xl p-8 border transition-all duration-500",
-              isAnonymous ? "bg-slate-200/50 border-slate-200" : "bg-[#002147] text-white shadow-2xl shadow-[#002147]/20"
-          )}>
+          <div className="rounded-3xl p-8 border border-white/10 transition-all duration-500 bg-[#002147] text-white shadow-2xl shadow-[#002147]/20">
               <div className="flex items-center space-x-2 mb-6 text-[#FFD700]">
                   <Users className="h-6 w-6" />
                   <h3 className="font-black uppercase tracking-widest text-sm">Professor Sentiment</h3>
@@ -182,10 +233,7 @@ const CampusFeed: React.FC = () => {
                       </div>
                   ))}
               </div>
-              <button className={cn(
-                  "w-full mt-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all",
-                  isAnonymous ? "bg-slate-400 text-white" : "bg-[#FFD700] text-[#002147] hover:bg-white hover:text-[#002147]"
-              )}>
+              <button className="w-full mt-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all bg-[#FFD700] text-[#002147] hover:bg-white hover:text-[#002147]">
                   View Full Report
               </button>
           </div>
