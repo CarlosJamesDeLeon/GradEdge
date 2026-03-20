@@ -22,6 +22,15 @@ export default {
       fontFamily: {
         sans: ['Inter', 'Roboto', 'sans-serif'],
       },
+      keyframes: {
+        'prestige-pulse': {
+          '0%, 100%': { transform: 'translateY(0px) scale(1)', filter: 'drop-shadow(0 0 0px rgba(255, 215, 0, 0))' },
+          '50%': { transform: 'translateY(-6px) scale(1.02)', filter: 'drop-shadow(0 0 15px rgba(255, 215, 0, 0.5))' },
+        }
+      },
+      animation: {
+        'prestige-pulse': 'prestige-pulse 4s ease-in-out infinite',
+      }
     },
   },
   plugins: [],

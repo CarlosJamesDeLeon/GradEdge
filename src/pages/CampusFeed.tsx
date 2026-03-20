@@ -4,6 +4,7 @@ import { useOutletContext } from 'react-router-dom';
 import { cn } from '../components/Layout';
 import Avatar from '../components/Avatar';
 import IdentityBox from '../components/IdentityBox';
+import ThreadedComments from '../components/ThreadedComments';
 
 type SubjectTab = 'cs' | 'math' | 'physics';
 
@@ -17,7 +18,7 @@ const MOCK_THREADS = [
     subject: 'Data Structures (CS301)',
     content: 'Can someone explain the difference between a Red-Black tree and an AVL tree in terms of rotation complexity?',
     verifiedCount: 24,
-    comments: 8,
+    comments: 2,
     isVerifiedAnswer: true,
     tags: ['CS301', 'Trees']
   },
@@ -30,7 +31,7 @@ const MOCK_THREADS = [
     subject: 'Principles of Marketing',
     content: 'What are the most effective KPIs for measuring social media organic growth in 2026 undergraduate study groups?',
     verifiedCount: 15,
-    comments: 4,
+    comments: 1,
     isVerifiedAnswer: false,
     tags: ['Marketing', 'KPIs']
   }
@@ -41,6 +42,14 @@ const CampusFeed: React.FC = () => {
   const [activeTab, setActiveTab] = useState<SubjectTab>('cs');
   const [selectedCourse, setSelectedCourse] = useState<string>('');
   const [selectedYear, setSelectedYear] = useState<string>('');
+  const [expandedPostId, setExpandedPostId] = useState<number | null>(null);
+  const [threads, setThreads] = useState(MOCK_THREADS);
+
+  const incrementCommentCount = (postId: number) => {
+    setThreads(prev => prev.map(t => 
+      t.id === postId ? { ...t, comments: t.comments + 1 } : t
+    ));
+  };
 
   const subjects: { id: SubjectTab; label: string }[] = [
     { id: 'cs', label: 'Computer Science' },
@@ -49,8 +58,8 @@ const CampusFeed: React.FC = () => {
   ];
 
   return (
-    <div className="flex flex-col lg:flex-row gap-8 pb-20 md:pb-0">
-      <div className="flex-1 max-w-3xl">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-20 md:pb-0">
+      <div className="lg:col-span-2">
         <header className="mb-10">
           <div className="flex items-center space-x-2 mb-2">
               <div className="h-2 w-8 bg-[#FFD700] rounded-full" />
@@ -142,7 +151,7 @@ const CampusFeed: React.FC = () => {
 
         {/* Feed Stream */}
         <div className="space-y-8">
-          {MOCK_THREADS.map((thread) => (
+          {threads.map((thread) => (
             <article key={thread.id} className={cn(
                 "rounded-3xl p-8 border transition-all duration-500 group",
                 thread.isVerifiedAnswer ? "border-[#FFD700] bg-white shadow-xl shadow-[#FFD700]/5" : isAnonymous ? "bg-slate-100/50 border-slate-200" : "bg-white border-gray-100 shadow-sm hover:border-gray-200"
@@ -196,21 +205,32 @@ const CampusFeed: React.FC = () => {
                   <ShieldCheck className={cn("h-6 w-6", thread.verifiedCount > 20 && "fill-current")} />
                   <span>{thread.verifiedCount} Verified Accuracy</span>
                 </button>
-                <button className="flex items-center space-x-2 text-gray-400 hover:text-[#002147] transition-colors font-bold">
+                <button 
+                  onClick={() => setExpandedPostId(expandedPostId === thread.id ? null : thread.id)}
+                  className={cn(
+                    "flex items-center space-x-2 transition-colors font-bold",
+                    expandedPostId === thread.id ? "text-[#002147]" : "text-gray-400 hover:text-[#002147]"
+                  )}
+                >
                   <MessageSquare className="h-6 w-6" />
-                  <span>{thread.comments}</span>
+                  <span>{thread.comments === 0 ? "Add Comment" : thread.comments}</span>
                 </button>
                 <button className="flex items-center space-x-2 text-gray-400 hover:text-[#002147] transition-colors font-bold">
                   <Share2 className="h-6 w-6" />
                 </button>
               </div>
+
+              {/* Threaded Discussion Dropdown */}
+              {expandedPostId === thread.id && (
+                <ThreadedComments postId={thread.id} onCommentAdded={() => incrementCommentCount(thread.id)} />
+              )}
             </article>
           ))}
         </div>
       </div>
 
       {/* Right Sidebar Widgets */}
-      <div className="w-full lg:w-80 space-y-8">
+      <div className="lg:col-span-1 space-y-8">
           {/* Teacher Rating Widget */}
           <div className="rounded-3xl p-8 border border-white/10 transition-all duration-500 bg-[#002147] text-white shadow-2xl shadow-[#002147]/20">
               <div className="flex items-center space-x-2 mb-6 text-[#FFD700]">

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { NavLink, Outlet, Navigate } from 'react-router-dom';
-import { ShoppingBag, LogOut, BookOpen, GraduationCap, Shield, ShieldOff } from 'lucide-react';
+import { ShoppingBag, LogOut, BookOpen, GraduationCap, Bell } from 'lucide-react';
 import Avatar from './Avatar';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -15,7 +15,21 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
-  const [isAnonymous, setIsAnonymous] = useState(false);
+  const isAnonymous = false;
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsNotificationsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   if (!isAuthenticated) {
     return <Navigate to="/auth" replace />;
@@ -26,10 +40,6 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
     { to: '/marketplace', icon: ShoppingBag, label: 'Campus Marketplace' },
     { to: '/mentorship', icon: GraduationCap, label: 'Mentorship Bridge' },
   ];
-
-  const activeClass = isAnonymous 
-    ? 'bg-slate-200 text-slate-800' 
-    : 'bg-[#FFD700]/20 text-[#FFD700]';
 
   return (
     <div className={cn(
@@ -44,11 +54,15 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
       )}>
         <div>
           <div className="p-8 flex items-center space-x-3">
-            <div className={cn(
-              "p-2 rounded-lg transition-colors",
-              isAnonymous ? "bg-slate-200" : "bg-white/10"
-            )}>
-              <GraduationCap className={cn("h-8 w-8", isAnonymous ? "text-slate-600" : "text-[#FFD700]")} />
+            <div id="brand-entrance" className="w-12 h-12 flex items-center justify-center flex-shrink-0">
+              <img 
+                src="/Gemini_Generated_Image_k7d8mfk7d8mfk7d8.png" 
+                alt="GradEdge Logo" 
+                className={cn(
+                  "w-full h-full max-w-[48px] object-contain animate-[prestige-pulse_4s_ease-in-out_infinite]",
+                  isAnonymous && "brightness-0 opacity-50"
+                )}
+              />
             </div>
             <span className="text-2xl tracking-tighter">
               <span className={cn("font-black", isAnonymous ? "text-slate-700" : "text-white")}>Grad</span>
@@ -56,24 +70,26 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
             </span>
           </div>
           
-          <nav className="mt-8 px-6 space-y-3">
+          <nav className="mt-8 px-6 space-y-6">
             {navItems.map((item) => (
               <NavLink
                 key={item.to}
                 to={item.to}
                 className={({ isActive }) =>
                   cn(
-                    'flex items-center space-x-4 px-5 py-4 rounded-2xl transition-all duration-300 group font-medium',
+                    'flex items-center space-x-4 px-5 py-4 transition-all duration-300 group font-medium border-l-4 rounded-r-2xl rounded-l-none',
                     isActive
-                      ? activeClass
+                      ? isAnonymous
+                        ? 'bg-slate-200 text-slate-800 border-slate-800'
+                        : 'bg-[#FFD700]/10 text-[#FFD700] border-[#FFD700]'
                       : isAnonymous 
-                        ? 'text-slate-500 hover:bg-slate-200 hover:text-slate-800'
-                        : 'text-white/70 hover:bg-white/10 hover:text-white'
+                        ? 'border-transparent text-slate-500 hover:bg-slate-200 hover:text-slate-800 hover:border-slate-800'
+                        : 'border-transparent text-white/70 hover:bg-white/5 hover:text-[#FFD700] hover:border-[#FFD700]'
                   )
                 }
               >
-                <item.icon className="h-5 w-5" />
-                <span>{item.label}</span>
+                <item.icon className="h-6 w-6" strokeWidth={1.5} />
+                <span className="text-lg">{item.label}</span>
               </NavLink>
             ))}
           </nav>
@@ -99,13 +115,22 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
       <main className="flex-1 overflow-y-auto w-full relative">
         {/* Header */}
         <header className={cn(
-          "sticky top-0 z-30 px-8 py-4 border-b backdrop-blur-md flex items-center justify-between transition-colors duration-500",
+          "sticky top-0 z-40 px-8 py-4 border-b backdrop-blur-md flex items-center justify-between transition-colors duration-500",
           isAnonymous 
             ? "bg-slate-50/80 border-slate-200" 
             : "bg-white/80 border-gray-100"
         )}>
           <div className="flex items-center md:hidden">
-              <GraduationCap className={cn("h-6 w-6 mr-2", isAnonymous ? "text-slate-600" : "text-[#FFD700]")} />
+              <div id="brand-entrance" className="w-8 h-8 flex items-center justify-center mr-2">
+                <img 
+                  src="/Gemini_Generated_Image_k7d8mfk7d8mfk7d8.png" 
+                  alt="GradEdge Logo" 
+                  className={cn(
+                    "w-full h-full max-w-[32px] object-contain animate-[prestige-pulse_4s_ease-in-out_infinite]",
+                    isAnonymous && "brightness-0 opacity-50"
+                  )}
+                />
+              </div>
               <span className="text-xl font-black tracking-tighter">
                   <span className={isAnonymous ? "text-slate-700" : "text-[#002147]"}>Grad</span>
                   <span className={isAnonymous ? "text-slate-500" : "text-[#FFD700]"}>Edge</span>
@@ -118,31 +143,64 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
             </h2>
           </div>
 
-          <div className="flex items-center space-x-6">
-            <div className="flex items-center space-x-3 bg-gray-100/50 p-1.5 rounded-full border border-gray-200/50">
+          <div className="flex items-center gap-6 relative">
+            {/* Notifications Container */}
+            <div className="relative" ref={dropdownRef}>
+              {/* Notification Bell */}
               <button 
-                onClick={() => setIsAnonymous(!isAnonymous)}
-                className={cn(
-                  "flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-bold transition-all duration-500",
-                  isAnonymous 
-                    ? "bg-slate-600 text-white shadow-lg shadow-slate-200" 
-                    : "bg-white text-[#002147] shadow-sm"
-                )}
+                onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+                className="relative p-2 text-[#002147] hover:scale-110 transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(255,215,0,0.6)] focus:outline-none"
               >
-                {isAnonymous ? <ShieldOff className="h-4 w-4" /> : <Shield className="h-4 w-4" />}
-                <span>{isAnonymous ? "Anonymous Mode" : "Public Mode"}</span>
+                <Bell className="h-6 w-6" strokeWidth={1.5} />
+                {/* Ping Indicator */}
+                <span className="absolute top-1 right-2 h-2.5 w-2.5 bg-[#FFD700] rounded-full border-2 border-white"></span>
               </button>
+
+              {/* Notifications Dropdown */}
+              {isNotificationsOpen && (
+                <div className="absolute top-12 right-0 w-80 bg-white/95 backdrop-blur-md border border-slate-200 rounded-3xl shadow-xl z-50 animate-in fade-in slide-in-from-top-2">
+                  <div className="absolute -top-2 right-3 w-4 h-4 bg-white/95 border-l border-t border-slate-200 transform rotate-45"></div>
+                  <div className="relative z-10 bg-white/95 rounded-3xl overflow-hidden">
+                    <div className="p-4 border-b border-[#002147]/5 flex items-center justify-between">
+                      <h3 className="font-black text-[#002147] uppercase tracking-widest text-xs">Notifications</h3>
+                      <button className="text-[#FFD700] hover:text-[#FFC000] text-[10px] font-black uppercase tracking-widest transition-colors">
+                        View All
+                      </button>
+                    </div>
+                    <div className="divide-y divide-[#002147]/5 max-h-96 overflow-y-auto">
+                      <div className="p-4 hover:bg-slate-50 transition-colors cursor-pointer group">
+                        <p className="text-sm font-medium text-[#002147]">
+                          Someone replied to your anonymous post in <span className="font-black text-[#FFD700]">BSCS</span>
+                        </p>
+                        <p className="text-[10px] text-gray-400 font-bold tracking-widest uppercase mt-2">2m ago</p>
+                      </div>
+                      <div className="p-4 hover:bg-slate-50 transition-colors cursor-pointer group">
+                        <p className="text-sm font-medium text-[#002147]">
+                          New resource added to <span className="font-black text-[#FFD700]">Physics</span>
+                        </p>
+                        <p className="text-[10px] text-gray-400 font-bold tracking-widest uppercase mt-2">1h ago</p>
+                      </div>
+                      <div className="p-4 hover:bg-slate-50 transition-colors cursor-pointer group">
+                        <p className="text-sm font-medium text-[#002147]">
+                          Dr. Turing released grades for <span className="font-black text-[#FFD700]">CS301</span>
+                        </p>
+                        <p className="text-[10px] text-gray-400 font-bold tracking-widest uppercase mt-2">3h ago</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
             
             <Avatar 
                 name="Janet Doe" 
-                isAnonymous={isAnonymous} 
-                className={isAnonymous ? "border-white" : "border-[#FFD700]/20"}
+                isAnonymous={false} 
+                className="border-[#FFD700]/20"
             />
           </div>
         </header>
 
-        <div className="max-w-6xl mx-auto p-8">
+        <div className="max-w-7xl mx-auto p-8">
           <Outlet context={{ isAnonymous }} />
         </div>
       </main>

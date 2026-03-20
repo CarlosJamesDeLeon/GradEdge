@@ -69,7 +69,7 @@ const IdentityBox: React.FC<IdentityBoxProps> = ({
           className={cn(
             "flex items-center space-x-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 border-2 active:scale-95",
             isAnonymous 
-              ? "bg-[#002147] border-[#002147] text-white" 
+              ? "bg-[#FFD700]/10 border-[#FFD700] text-[#002147] shadow-sm" 
               : "bg-white border-gray-100 text-[#002147]/40 hover:border-[#FFD700]/20 hover:text-[#FFD700]"
           )}
         >
