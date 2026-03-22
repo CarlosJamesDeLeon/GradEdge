@@ -54,7 +54,7 @@ const Marketplace: React.FC = () => {
     : MOCK_ITEMS.filter(item => item.category === activeCategory);
 
   return (
-    <div className="w-full pb-20 md:pb-0 font-sans">
+    <div className="w-full pb-20 md:pb-0 font-sans w-full">
       <header className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end space-y-6 md:space-y-0">
         <div>
           <div className="flex items-center space-x-2 mb-2">
@@ -123,7 +123,7 @@ const Marketplace: React.FC = () => {
       </div>
 
       {/* Items Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full">
         {filteredItems.map(item => (
           <div key={item.id} className={cn(
               "rounded-3xl overflow-hidden border transition-all duration-300 group cursor-pointer flex flex-col hover:shadow-2xl hover:-translate-y-2",

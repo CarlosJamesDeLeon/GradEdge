@@ -1,12 +1,62 @@
 import React, { useState } from 'react';
-import { Share2, MessageSquare, ShieldCheck, Star, Users, Briefcase, ChevronDown } from 'lucide-react';
-import { useOutletContext } from 'react-router-dom';
+import { Share2, MessageSquare, ShieldCheck, Star, Users, Briefcase, ChevronDown, Sparkles } from 'lucide-react';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 import { cn } from '../components/Layout';
 import Avatar from '../components/Avatar';
 import IdentityBox from '../components/IdentityBox';
 import ThreadedComments from '../components/ThreadedComments';
 
-type SubjectTab = 'cs' | 'math' | 'physics';
+const COURSES_DATA = [
+  {
+    id: 'BSCS',
+    name: 'BS Computer Science',
+    description: 'Master the art of coding, algorithms, and system architecture.',
+    years: [
+      {
+        level: '1st Year',
+        subjects: [
+          { id: 'cs101', name: 'Intro to Programming', chatID: 'CS101_Intro_Programming' },
+          { id: 'cs102', name: 'Discrete Math', chatID: 'CS102_Discrete_Math' },
+        ]
+      },
+      {
+        level: '2nd Year',
+        subjects: [
+          { id: 'cs201', name: 'Data Structures', chatID: 'CS201_Data_Structures' },
+          { id: 'cs202', name: 'Computer Architecture', chatID: 'CS202_Architecture' },
+        ]
+      },
+      {
+        level: '3rd Year',
+        subjects: [
+          { id: 'cs301', name: 'Operating Systems', chatID: 'CS301_OS' },
+          { id: 'cs302', name: 'Database Systems', chatID: 'CS302_DB' },
+        ]
+      },
+      {
+        level: '4th Year',
+        subjects: [
+          { id: 'cs401', name: 'Software Engineering', chatID: 'CS401_SoftEng' },
+          { id: 'cs402', name: 'AI & Machine Learning', chatID: 'CS402_AI_ML' },
+        ]
+      }
+    ]
+  },
+  {
+    id: 'BSIT',
+    name: 'BS Information Technology',
+    description: 'Focus on networking, cybersecurity, and web technologies.',
+    years: [
+      {
+        level: '1st Year',
+        subjects: [
+          { id: 'it101', name: 'IT Fundamentals', chatID: 'IT101_Fundamentals' },
+          { id: 'it102', name: 'Web Dev 1', chatID: 'IT102_Web1' },
+        ]
+      }
+    ]
+  }
+];
 
 const MOCK_THREADS = [
   {
@@ -39,9 +89,11 @@ const MOCK_THREADS = [
 
 const CampusFeed: React.FC = () => {
   const { isAnonymous } = useOutletContext<{ isAnonymous: boolean }>();
-  const [activeTab, setActiveTab] = useState<SubjectTab>('cs');
+  const navigate = useNavigate();
   const [selectedCourse, setSelectedCourse] = useState<string>('');
   const [selectedYear, setSelectedYear] = useState<string>('');
+  const [showSubjectDiscovery, setShowSubjectDiscovery] = useState(false);
+  const [expandedYear, setExpandedYear] = useState<string | null>(null);
   const [expandedPostId, setExpandedPostId] = useState<number | null>(null);
   const [threads, setThreads] = useState(MOCK_THREADS);
 
@@ -51,14 +103,10 @@ const CampusFeed: React.FC = () => {
     ));
   };
 
-  const subjects: { id: SubjectTab; label: string }[] = [
-    { id: 'cs', label: 'Computer Science' },
-    { id: 'math', label: 'Mathematics' },
-    { id: 'physics', label: 'Physics' },
-  ];
+  const currentCourseData = COURSES_DATA.find(c => c.id === selectedCourse);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-20 md:pb-0">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-20 md:pb-0 w-full">
       <div className="lg:col-span-2">
         <header className="mb-10">
           <div className="flex items-center space-x-2 mb-2">
@@ -76,7 +124,11 @@ const CampusFeed: React.FC = () => {
               <div className="relative group">
                 <select
                   value={selectedCourse}
-                  onChange={(e) => setSelectedCourse(e.target.value)}
+                  onChange={(e) => {
+                    setSelectedCourse(e.target.value);
+                    setShowSubjectDiscovery(false);
+                    setExpandedYear(null);
+                  }}
                   className="appearance-none bg-white border-2 border-[#002147] text-[#002147] px-6 py-3 pr-12 rounded-2xl font-bold text-sm focus:outline-none focus:ring-2 focus:ring-[#FFD700] transition-all cursor-pointer"
                 >
                   <option value="">Select Course</option>
@@ -122,23 +174,79 @@ const CampusFeed: React.FC = () => {
             )}
           </div>
           
-          <div className="flex space-x-2 mt-8 overflow-x-auto pb-2 scrollbar-hide">
-            {subjects.map((sub) => (
-              <button
-                key={sub.id}
-                onClick={() => setActiveTab(sub.id)}
-                className={cn(
-                  'whitespace-nowrap py-3 px-6 text-sm font-bold rounded-2xl transition-all duration-300 border-2',
-                  activeTab === sub.id
-                    ? isAnonymous ? 'bg-slate-600 border-slate-600 text-white shadow-xl shadow-slate-200' : 'bg-[#002147] border-[#002147] text-white shadow-xl shadow-[#002147]/10'
-                    : isAnonymous ? 'bg-slate-100 border-slate-200 text-slate-500 hover:border-slate-300' : 'bg-white border-gray-100 text-[#002147]/40 hover:border-gray-200 shadow-sm'
-                )}
-              >
-                {sub.label}
-              </button>
-            ))}
-          </div>
         </header>
+
+        {/* Course Summary Card */}
+        {selectedCourse && currentCourseData && (
+          <div className="mb-10 bg-white border-2 border-[#002147] rounded-3xl p-8 shadow-2xl shadow-[#002147]/5 animate-in fade-in slide-in-from-top-4 relative overflow-hidden group">
+             {/* Decorative Background Element */}
+             <div className="absolute top-0 right-0 w-64 h-64 bg-[#FFD700]/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl group-hover:bg-[#FFD700]/10 transition-colors" />
+             
+             <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+               <div className="flex-1">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Sparkles className="h-4 w-4 text-[#FFD700]" />
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#FFD700]">Selected Major</span>
+                  </div>
+                  <h2 className="text-3xl font-black text-[#002147] mb-3">{currentCourseData.name}</h2>
+                  <p className="text-[#002147]/60 font-bold text-sm leading-relaxed max-w-xl">
+                    {currentCourseData.description}
+                  </p>
+               </div>
+               
+               <button 
+                onClick={() => setShowSubjectDiscovery(!showSubjectDiscovery)}
+                className="group relative px-8 py-4 bg-[#002147] text-white font-black rounded-2xl overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-xl shadow-[#002147]/20 whitespace-nowrap"
+               >
+                 <div className="absolute inset-0 bg-[#FFD700] translate-y-full group-hover:translate-y-0 transition-transform duration-300 -z-0" />
+                 <span className="relative z-10 group-hover:text-[#002147] transition-colors">Explore Subjects & Community</span>
+                 {/* Hover Glow Effect */}
+                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(circle_at_center,_rgba(255,215,0,0.4)_0%,_transparent_70%)] blur-xl" />
+               </button>
+             </div>
+
+             {/* Progressive Disclosure: Subjects */}
+             {showSubjectDiscovery && (
+               <div className="mt-10 pt-10 border-t-2 border-gray-50 space-y-6 animate-in fade-in slide-in-from-top-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-xs font-black uppercase tracking-widest text-gray-400">Curriculum & Subject Hubs</h3>
+                    <div className="h-px flex-1 bg-gray-50 mx-4" />
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {currentCourseData.years.map(year => (
+                      <div key={year.level} className="bg-slate-50/50 rounded-2xl border border-gray-100 hover:border-[#FFD700]/30 transition-all">
+                        <div 
+                          className="flex justify-between items-center cursor-pointer p-5"
+                          onClick={() => setExpandedYear(expandedYear === year.level ? null : year.level)}
+                        >
+                          <h4 className="font-black text-[#002147] uppercase tracking-tight text-sm">{year.level}</h4>
+                          <ChevronDown className={cn("h-5 w-5 text-gray-400 transition-transform", expandedYear === year.level && "rotate-180")} />
+                        </div>
+                        
+                        {expandedYear === year.level && (
+                          <div className="px-5 pb-5 space-y-2 animate-in fade-in slide-in-from-top-2">
+                            {year.subjects.map(subject => (
+                              <div 
+                                key={subject.id}
+                                onClick={() => navigate(`/chat/${subject.chatID}`)}
+                                className="bg-white p-4 rounded-xl border border-gray-100 hover:border-[#FFD700] hover:shadow-md transition-all cursor-pointer flex justify-between items-center group/item"
+                              >
+                                <span className="font-bold text-[#002147] text-sm">{subject.name}</span>
+                                <div className="p-2 rounded-lg bg-slate-50 group-hover/item:bg-[#FFD700]/10 transition-colors">
+                                  <MessageSquare className="h-4 w-4 text-gray-300 group-hover/item:text-[#FFD700] transition-colors" />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+               </div>
+             )}
+          </div>
+        )}
 
         {/* Identity-Aware Post Box */}
         <div className="mb-10">
@@ -238,8 +346,8 @@ const CampusFeed: React.FC = () => {
                   <h3 className="font-black uppercase tracking-widest text-sm">Professor Sentiment</h3>
               </div>
               <div className="mb-8 p-4 bg-white/5 rounded-2xl border border-white/10">
-                  <p className="text-sm font-bold opacity-60 mb-1">Current Subject</p>
-                  <p className="text-lg font-black">{activeTab === 'cs' ? 'Dr. Alan Turing' : activeTab === 'math' ? 'Dr. Katherine Johnson' : 'Dr. Richard Feynman'}</p>
+                  <p className="text-sm font-bold opacity-60 mb-1">Current Focus</p>
+                  <p className="text-lg font-black">{selectedCourse || 'General Academic'}</p>
               </div>
               <div className="space-y-6">
                   {[

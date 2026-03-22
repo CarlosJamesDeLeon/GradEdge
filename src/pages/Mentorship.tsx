@@ -8,7 +8,7 @@ const MentorshipBridge: React.FC = () => {
     const { isAnonymous } = useOutletContext<{ isAnonymous: boolean }>();
 
     return (
-        <div className="w-full pb-20 md:pb-0 font-sans">
+        <div className="w-full pb-20 md:pb-0 font-sans w-full">
             <header className="mb-12">
                 <div className="flex items-center space-x-2 mb-2">
                     <div className="h-2 w-8 bg-[#FFD700] rounded-full" />

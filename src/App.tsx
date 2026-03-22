@@ -5,6 +5,7 @@ import Auth from './pages/Auth';
 import CampusFeed from './pages/CampusFeed';
 import Marketplace from './pages/Marketplace';
 import Mentorship from './pages/Mentorship';
+import SubjectChat from './pages/SubjectChat';
 
 function App() {
   // Simulate authentication state
@@ -29,6 +30,7 @@ function App() {
           <Route path="/feed" element={<CampusFeed />} />
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/mentorship" element={<Mentorship />} />
+          <Route path="/chat/:subjectId" element={<SubjectChat />} />
         </Route>
       </Routes>
     </Router>
