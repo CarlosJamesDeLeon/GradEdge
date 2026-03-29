@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { BookOpen, Users, Video, FileText, Search, PlusCircle } from 'lucide-react';
-import { cn } from '../components/Layout';
+import { Users, Video, FileText, Search, PlusCircle } from 'lucide-react';
 
 const MOCK_HUBS = [
   {

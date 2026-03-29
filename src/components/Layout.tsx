@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { NavLink, Outlet, Navigate } from 'react-router-dom';
-import { ShoppingBag, LogOut, BookOpen, GraduationCap, Bell, Menu } from 'lucide-react';
+import { ShoppingBag, LogOut, BookOpen, GraduationCap, Bell, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import Avatar from './Avatar';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -53,86 +53,111 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
     )}>
       {/* Sidebar navigation */}
       <aside className={cn(
-        "flex-shrink-0 border-r transition-all duration-300 ease-in-out flex flex-col justify-between hidden md:flex z-20",
-        isCollapsed ? "w-[80px]" : "w-72", // Slightly increased collapsed width for better icon centering
+        "flex-shrink-0 border-r transition-[width] duration-300 ease-in-out flex flex-col justify-between hidden md:flex z-20 overflow-hidden",
+        isCollapsed ? "w-[54px]" : "w-72",
         isAnonymous ? 'bg-slate-100' : 'bg-[#002147]',
         isAnonymous ? "border-slate-200" : "border-[#002147]/10"
       )}>
         <div>
-          <div className={cn("p-4 flex items-center justify-between", isCollapsed ? "justify-center p-6" : "space-x-3 p-8")}>
-            <div id="brand-entrance" className={cn("w-12 h-12 flex items-center justify-center flex-shrink-0", isCollapsed && "w-full h-12")}>
-              <img 
-                src="/Gemini_Generated_Image_k7d8mfk7d8mfk7d8.png" 
-                alt="GradEdge Logo" 
+          {/* Header: always a horizontal row — no flex-direction change */}
+          <div className="flex items-center h-[60px] px-3 overflow-hidden">
+            {/* Logo – width collapses to 0, never changes flex direction */}
+            <div
+              className={cn(
+                "flex-shrink-0 overflow-hidden transition-all duration-300 ease-in-out flex items-center",
+                isCollapsed ? "w-0 opacity-0" : "w-9 opacity-100 mr-2"
+              )}
+            >
+              <img
+                src="/Gemini_Generated_Image_k7d8mfk7d8mfk7d8.png"
+                alt="GradEdge Logo"
                 className={cn(
-                  "w-full h-full max-w-[48px] object-contain animate-[prestige-pulse_4s_ease-in-out_infinite]",
+                  "w-9 h-9 object-contain flex-shrink-0 animate-[prestige-pulse_4s_ease-in-out_infinite]",
                   isAnonymous && "brightness-0 opacity-50"
                 )}
               />
             </div>
-            {!isCollapsed && (
-              <span className="text-2xl tracking-tighter">
-                <span className={cn("font-black", isAnonymous ? "text-slate-700" : "text-white")}>Grad</span>
-                <span className={cn("font-black", isAnonymous ? "text-slate-500" : "text-[#FFD700]")}>Edge</span>
-              </span>
-            )}
-            {/* Toggle button now stays relative to sidebar content */}
-            <button 
-  onClick={toggleSidebar}
-  className={cn(
-    "text-white/70 hover:text-[#FFD700] transition-all duration-300 flex items-center justify-center", 
-    isAnonymous && "text-slate-500 hover:text-slate-800",
-    isCollapsed ? "mt-0" : "ml-auto" // Keeps it centered when small, right-aligned when big
-  )}
->
-  <Menu className={cn(
-    "h-6 w-6 transition-transform duration-300", 
-    isCollapsed ? "rotate-0" : "rotate-180" // Only rotates 180, doesn't stand on its head!
-  )} />
-</button>
+
+            {/* Brand text */}
+            <span
+              className={cn(
+                "text-2xl tracking-tighter whitespace-nowrap overflow-hidden transition-all duration-300 ease-in-out",
+                isCollapsed ? "opacity-0 max-w-0" : "opacity-100 max-w-[160px]"
+              )}
+            >
+              <span className={cn("font-black", isAnonymous ? "text-slate-700" : "text-white")}>Grad</span>
+              <span className={cn("font-black", isAnonymous ? "text-slate-500" : "text-[#FFD700]")}>Edge</span>
+            </span>
+
+            {/* Toggle – stable ml-auto keeps it pinned to the right always */}
+            <button
+              onClick={toggleSidebar}
+              aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              className={cn(
+                "ml-auto flex-shrink-0 p-1.5 rounded-lg transition-all duration-200",
+                "hover:bg-white/10 hover:text-[#FFD700] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FFD700]/50",
+                isAnonymous
+                  ? "text-slate-500 hover:bg-slate-200 hover:text-slate-800"
+                  : "text-white/60"
+              )}
+            >
+              {isCollapsed
+                ? <PanelLeftOpen  className="h-5 w-5" />
+                : <PanelLeftClose className="h-5 w-5" />}
+            </button>
           </div>
           
-          <nav className="mt-8 space-y-6">
+          <nav className="mt-6 space-y-1 px-2">
             {navItems.map((item) => (
               <NavLink
                 key={item.to}
                 to={item.to}
                 className={({ isActive }) =>
                   cn(
-                    "flex items-center transition-all duration-300 group font-medium border-l-4 rounded-r-2xl rounded-l-none",
-                    isCollapsed ? "justify-center px-0 py-4" : "space-x-4 px-5 py-4",
+                    "flex items-center gap-3 py-3 px-3 rounded-xl font-medium border-l-4 transition-all duration-200 group overflow-hidden",
                     isActive
                       ? isAnonymous
                         ? 'bg-slate-200 text-slate-800 border-slate-800'
                         : 'bg-[#FFD700]/10 text-[#FFD700] border-[#FFD700]'
-                      : isAnonymous 
+                      : isAnonymous
                         ? 'border-transparent text-slate-500 hover:bg-slate-200 hover:text-slate-800 hover:border-slate-800'
-                        : 'border-transparent text-white/70 hover:bg-white/5 hover:text-[#FFD700] hover:border-[#FFD700]',
-                    isCollapsed && "hover:drop-shadow-[0_0_8px_rgba(255,215,0,0.6)]"
+                        : 'border-transparent text-white/60 hover:bg-white/5 hover:text-[#FFD700] hover:border-[#FFD700]'
                   )
                 }
               >
-                <item.icon className={cn("h-6 w-6 flex-shrink-0", isCollapsed ? "mx-auto" : "")} strokeWidth={1.5} />
-                {!isCollapsed && <span className="text-lg whitespace-nowrap">{item.label}</span>}
+                <item.icon className="h-5 w-5 flex-shrink-0" strokeWidth={1.5} />
+                <span
+                  className={cn(
+                    "text-base whitespace-nowrap overflow-hidden transition-all duration-300 ease-in-out",
+                    isCollapsed ? "opacity-0 max-w-0" : "opacity-100 max-w-[200px]"
+                  )}
+                >
+                  {item.label}
+                </span>
               </NavLink>
             ))}
           </nav>
         </div>
 
-        <div className={cn("p-6", isCollapsed && "p-2 text-center")}>
+        <div className="px-2 pb-5">
           <button
             onClick={onLogout}
             className={cn(
-              "flex w-full items-center transition-all duration-300 font-medium rounded-2xl",
-              isCollapsed ? "justify-center p-4" : "space-x-3 px-5 py-4",
-              isAnonymous 
-                ? "text-slate-400 hover:bg-red-50 hover:text-red-500" 
-                : "text-white/50 hover:bg-white/5 hover:text-red-400",
-              isCollapsed && "hover:drop-shadow-[0_0_8px_rgba(255,215,0,0.6)]"
+              "flex items-center gap-3 w-full px-3 py-3 rounded-xl font-medium overflow-hidden transition-all duration-200",
+              isAnonymous
+                ? "text-slate-400 hover:bg-red-50 hover:text-red-500"
+                : "text-white/50 hover:bg-white/5 hover:text-red-400"
             )}
           >
-            <LogOut className={cn("h-5 w-5 flex-shrink-0", isCollapsed ? "mx-auto" : "")} />
-            {!isCollapsed && <span>Sign Out</span>}
+            <LogOut className="h-5 w-5 flex-shrink-0" />
+            <span
+              className={cn(
+                "whitespace-nowrap overflow-hidden transition-all duration-300 ease-in-out",
+                isCollapsed ? "opacity-0 max-w-0" : "opacity-100 max-w-[200px]"
+              )}
+            >
+              Sign Out
+            </span>
           </button>
         </div>
       </aside>

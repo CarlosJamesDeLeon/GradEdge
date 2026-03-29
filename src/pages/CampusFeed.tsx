@@ -213,7 +213,7 @@ const CampusFeed: React.FC = () => {
                     <div className="h-px flex-1 bg-gray-50 mx-4" />
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
                     {currentCourseData.years.map(year => (
                       <div key={year.level} className="bg-slate-50/50 rounded-2xl border border-gray-100 hover:border-[#FFD700]/30 transition-all">
                         <div 
