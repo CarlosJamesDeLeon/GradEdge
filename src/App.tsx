@@ -7,6 +7,8 @@ import Marketplace from './pages/Marketplace';
 import Mentorship from './pages/Mentorship';
 import SubjectChat from './pages/SubjectChat';
 
+import ProfilePage from './pages/ProfilePage';
+
 function App() {
   // Simulate authentication state
   const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -31,6 +33,7 @@ function App() {
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/mentorship" element={<Mentorship />} />
           <Route path="/chat/:subjectId" element={<SubjectChat />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Route>
       </Routes>
     </Router>

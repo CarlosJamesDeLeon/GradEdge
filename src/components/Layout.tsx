@@ -207,11 +207,13 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
               )}
             </div>
             
-            <Avatar 
-                name="Janet Doe" 
-                isAnonymous={false} 
-                className="border-[#FFD700]/20"
-            />
+            <NavLink to="/profile" className="focus:outline-none transition-transform hover:scale-105 active:scale-95">
+              <Avatar 
+                  name="Janet Doe" 
+                  isAnonymous={false} 
+                  className="border-[#FFD700]/20"
+              />
+            </NavLink>
           </div>
         </header>
 
