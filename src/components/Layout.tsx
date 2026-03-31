@@ -41,7 +41,7 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
   }
 
   const navItems = [
-    { to: '/feed', icon: BookOpen, label: 'My Subjects' },
+    { to: '/feed', icon: BookOpen, label: 'Academic Feed' },
     { to: '/marketplace', icon: ShoppingBag, label: 'Campus Marketplace' },
     { to: '/mentorship', icon: GraduationCap, label: 'Mentorship Bridge' },
   ];
@@ -102,11 +102,11 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
               )}
             >
               {isCollapsed
-                ? <PanelLeftOpen  className="h-5 w-5" />
+                ? <PanelLeftOpen className="h-5 w-5" />
                 : <PanelLeftClose className="h-5 w-5" />}
             </button>
           </div>
-          
+
           <nav className="mt-6 space-y-1 px-2">
             {navItems.map((item) => (
               <NavLink
@@ -167,8 +167,8 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
         {/* Header */}
         <header className={cn(
           "sticky top-0 z-40 px-8 py-4 border-b backdrop-blur-md flex items-center justify-between transition-colors duration-500 flex-shrink-0",
-          isAnonymous 
-            ? "bg-slate-50/80 border-slate-200" 
+          isAnonymous
+            ? "bg-slate-50/80 border-slate-200"
             : "bg-white/80 border-gray-100"
         )}>
           <div className="flex items-center">
@@ -179,7 +179,7 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
 
           <div className="flex items-center gap-6 relative">
             <div className="relative" ref={dropdownRef}>
-              <button 
+              <button
                 onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
                 className="relative p-2 text-[#002147] hover:scale-110 transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(255,215,0,0.6)] focus:outline-none"
               >
@@ -206,12 +206,12 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
                 </div>
               )}
             </div>
-            
+
             <NavLink to="/profile" className="focus:outline-none transition-transform hover:scale-105 active:scale-95">
-              <Avatar 
-                  name="Janet Doe" 
-                  isAnonymous={false} 
-                  className="border-[#FFD700]/20"
+              <Avatar
+                name="Janet Doe"
+                isAnonymous={false}
+                className="border-[#FFD700]/20"
               />
             </NavLink>
           </div>
@@ -219,32 +219,32 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
 
         {/* Scrollable Main Section - FIXED: Added overflow-x-auto to prevent card squishing */}
         <main className="flex-1 overflow-y-auto overflow-x-auto bg-[#F8FAFC]">
-          <div className="max-w-7xl mx-auto p-8 min-w-fit"> 
+          <div className="max-w-7xl mx-auto p-8 min-w-fit">
             <Outlet context={{ isAnonymous }} />
           </div>
         </main>
       </div>
-      
+
       {/* Mobile Bottom Nav */}
       <nav className={cn(
         "md:hidden fixed bottom-6 left-6 right-6 border rounded-3xl flex justify-around p-3 z-40 shadow-2xl transition-all duration-500 backdrop-blur-xl",
         isAnonymous ? "bg-slate-800/90 border-slate-700" : "bg-[#002147]/90 border-white/10"
       )}>
         {navItems.map((item) => (
-           <NavLink
-           key={item.to}
-           to={item.to}
-           className={({ isActive }) =>
-             cn(
-               'p-3 rounded-2xl transition-all',
-               isActive 
-                ? isAnonymous ? 'bg-slate-700 text-white' : 'bg-[#FFD700] text-[#002147]'
-                : 'text-white/50'
-             )
-           }
-         >
-           <item.icon className="h-6 w-6" />
-         </NavLink>
+          <NavLink
+            key={item.to}
+            to={item.to}
+            className={({ isActive }) =>
+              cn(
+                'p-3 rounded-2xl transition-all',
+                isActive
+                  ? isAnonymous ? 'bg-slate-700 text-white' : 'bg-[#FFD700] text-[#002147]'
+                  : 'text-white/50'
+              )
+            }
+          >
+            <item.icon className="h-6 w-6" />
+          </NavLink>
         ))}
       </nav>
     </div>
