@@ -37,7 +37,7 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
   }, []);
 
   if (!isAuthenticated) {
-    return <Navigate to="/auth" replace />;
+    return <Navigate to="/" replace />;
   }
 
   const navItems = [

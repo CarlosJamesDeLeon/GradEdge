@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Mail, Lock, AlertCircle, ShieldCheck } from 'lucide-react';
 
 interface AuthProps {
   onAuthSuccess: () => void;
@@ -8,6 +7,7 @@ interface AuthProps {
 const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [studentId, setStudentId] = useState('');
   const [error, setError] = useState('');
   const [isLogin, setIsLogin] = useState(true);
 
@@ -15,123 +15,128 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
     e.preventDefault();
     setError('');
 
-    if (!email.endsWith('.edu')) {
-      setError('A valid .edu email is required for the Graduate Hub.');
+    if (!email) {
+      setError('Email is required.');
+      return;
+    }
+    
+    if (!email.includes('@') || !email.endsWith('.edu')) {
+      setError('A valid .edu email is required.');
       return;
     }
 
     if (password.length < 6) {
-      setError('Academic keys must be at least 6 characters.');
+      setError('Password must be at least 6 characters.');
+      return;
+    }
+
+    if (!isLogin && !studentId) {
+      setError('Student ID is required.');
       return;
     }
 
     onAuthSuccess();
   };
 
+  const toggleMode = () => {
+    setIsLogin(!isLogin);
+    setError('');
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center text-[#002147] bg-[#F8FAFC] relative overflow-hidden font-sans">
-      {/* Decorative Elements */}
-      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#002147]/10 rounded-full blur-[120px]" />
-      <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-[#FFD700]/20 rounded-full blur-[120px]" />
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 mix-blend-overlay pointer-events-none" />
-
-      {/* Centered Glassmorphism Card */}
-      <div className="relative z-10 w-full max-w-lg p-10 bg-white/90 backdrop-blur-xl shadow-[0_25px_50px_-12px_rgba(0,33,71,0.25),_0_0_0_1px_rgba(255,215,0,0.3)] rounded-[2.5rem]">
-        {/* Branding */}
-        <div id="brand-entrance" className="flex flex-col items-center justify-center text-center cursor-default mb-10">
-          <div className="inline-flex items-center justify-center mb-1">
-            <img 
-              src="/Gemini_Generated_Image_k7d8mfk7d8mfk7d8.png" 
-              alt="GradEdge Logo" 
-              className="w-16 h-16 max-w-[64px] object-contain animate-[prestige-pulse_4s_ease-in-out_infinite]"
-            />
+    <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] font-sans text-slate-900 px-4 sm:px-6">
+      <div className="w-full max-w-sm relative">
+        {/* Subtle gold ambient shadow - exactly one defining effect */}
+        <div className="absolute -inset-0.5 bg-[#FFD700] opacity-20 blur-2xl rounded-2xl pointer-events-none transition-all duration-1000"></div>
+        
+        <div className="relative bg-white shadow-sm ring-1 ring-black/5 rounded-2xl p-8 sm:p-10 transition-all">
+          <div className="mb-8">
+            <div className="font-bold text-xl text-[#002147] tracking-tight mb-6 cursor-default">
+              Grad<span className="text-[#FFD700]">Edge</span>
+            </div>
+            
+            <h1 className="text-2xl font-medium tracking-tight text-slate-900 mb-1.5">
+              {isLogin ? 'Welcome back.' : 'Request access.'}
+            </h1>
+            <p className="text-sm text-slate-500">
+              {isLogin ? 'Enter your credentials to continue.' : 'Create your verified account.'}
+            </p>
           </div>
-          <h1 className="text-5xl font-black italic tracking-tighter text-[#002147]" style={{ fontFamily: 'Montserrat, sans-serif' }}>
-            Grad<span className="text-[#FFD700]">Edge</span>
-          </h1>
-          <p className="text-[#002147]/60 font-bold tracking-[0.2em] uppercase text-xs mt-1">
-            The Student Safe Haven
-          </p>
-        </div>
 
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center space-x-2 bg-[#002147]/5 px-4 py-2 rounded-full mb-6 border border-[#002147]/10">
-            <ShieldCheck className="h-4 w-4 text-[#002147]" />
-            <span className="text-xs font-black uppercase tracking-widest">Verified Access Only</span>
-          </div>
-          <h2 className="text-3xl font-black text-[#002147] mb-2" style={{ fontFamily: 'Montserrat, sans-serif' }}>
-            {isLogin ? 'Welcome Back' : 'Secure Your Spot'}
-          </h2>
-          <p className="text-gray-500 font-medium text-sm">
-            {isLogin ? 'Enter your academic credentials to proceed.' : 'Create your verified student profile.'}
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-[10px] font-black text-[#002147]/40 uppercase tracking-widest mb-2 px-2">
-              University Email (.edu)
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                <Mail className="h-5 w-5 text-[#002147]/40" />
-              </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-1.5">
+              <label htmlFor="email" className="block text-xs font-medium text-slate-700">
+                Email
+              </label>
               <input
+                id="email"
                 type="email"
-                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="block w-full pl-14 pr-6 py-4 bg-white/70 backdrop-blur-md border hover:border-slate-300 border-slate-200 rounded-2xl text-slate-900 placeholder-slate-400 font-bold focus:outline-none focus:border-[#002147] focus:shadow-[inset_0_2px_15px_rgba(255,215,0,0.2)] transition-all duration-300 ease-in-out text-base"
-                placeholder="name@university.edu"
+                placeholder="student@university.edu"
+                className="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#002147] focus:border-[#002147] transition-shadow placeholder:text-slate-400"
+                required
               />
             </div>
-          </div>
 
-          <div>
-            <label className="block text-[10px] font-black text-[#002147]/40 uppercase tracking-widest mb-2 px-2">
-              Access Key
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                <Lock className="h-5 w-5 text-[#002147]/40" />
+            {!isLogin && (
+              <div className="space-y-1.5">
+                <label htmlFor="studentId" className="block text-xs font-medium text-slate-700">
+                  Student ID
+                </label>
+                <input
+                  id="studentId"
+                  type="text"
+                  value={studentId}
+                  onChange={(e) => setStudentId(e.target.value)}
+                  placeholder="e.g. 12345678"
+                  className="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#002147] focus:border-[#002147] transition-shadow placeholder:text-slate-400"
+                  required={!isLogin}
+                />
               </div>
+            )}
+
+            <div className="space-y-1.5">
+              <label htmlFor="password" className="block text-xs font-medium text-slate-700">
+                Password
+              </label>
               <input
+                id="password"
                 type="password"
-                required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="block w-full pl-14 pr-6 py-4 bg-white/70 backdrop-blur-md border hover:border-slate-300 border-slate-200 rounded-2xl text-slate-900 placeholder-slate-400 font-bold focus:outline-none focus:border-[#002147] focus:shadow-[inset_0_2px_15px_rgba(255,215,0,0.2)] transition-all duration-300 ease-in-out text-base"
                 placeholder="••••••••"
+                className="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#002147] focus:border-[#002147] transition-shadow placeholder:text-slate-400"
+                required
               />
             </div>
-          </div>
 
-          {error && (
-            <div className="p-4 rounded-2xl bg-red-50/90 backdrop-blur-md border-2 border-red-100 text-red-600 font-bold text-sm flex items-center space-x-3 animate-in fade-in slide-in-from-top-4">
-              <AlertCircle className="h-5 w-5 flex-shrink-0" />
-              <span>{error}</span>
+            {error && (
+              <div className="p-3 bg-red-50 text-red-600 text-xs font-medium rounded-lg border border-red-100 flex items-start">
+                <span>{error}</span>
+              </div>
+            )}
+
+            <div className="pt-2">
+              <button
+                type="submit"
+                className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#002147] hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#002147] transition-colors"
+                style={{ WebkitFontSmoothing: 'antialiased' }}
+              >
+                {isLogin ? 'Log in' : 'Continue'}
+              </button>
             </div>
-          )}
+          </form>
 
-          <button
-            type="submit"
-            className="group relative overflow-hidden w-full h-14 mt-4 flex items-center justify-center bg-gradient-to-b from-[#FFE55C] to-[#FFD700] text-[#002147] font-black text-sm uppercase tracking-[0.2em] rounded-2xl transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#FFD700]/40 active:scale-95 border-b-4 border-[#002147]/10 hover:border-transparent"
-          >
-            <div className="absolute inset-0 -translate-x-[150%] skew-x-[-20deg] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out bg-gradient-to-r from-transparent via-white/50 to-transparent" />
-            <span className="relative z-10">{isLogin ? 'Authorize Entry' : 'Create Identity'}</span>
-          </button>
-        </form>
-
-        <div className="mt-8 text-center text-sm">
-          <span className="text-gray-500 font-bold">
-            {isLogin ? "New to the hub? " : "Already verified? "}
-          </span>
-          <button
-            onClick={() => setIsLogin(!isLogin)}
-            className="text-[#002147] hover:text-black font-black uppercase tracking-widest underline decoration-[#FFD700]/50 hover:decoration-[#FFD700] decoration-2 underline-offset-4 transition-all duration-300"
-          >
-            {isLogin ? 'Request Access' : 'Authenticate'}
-          </button>
+          <div className="mt-8 text-center border-t border-slate-100 pt-6">
+            <button
+              onClick={toggleMode}
+              type="button"
+              className="text-xs text-slate-500 hover:text-[#002147] transition-colors focus:outline-none"
+            >
+              {isLogin ? "Don't have an account? Request access." : 'Already have access? Log in.'}
+            </button>
+          </div>
         </div>
       </div>
     </div>
