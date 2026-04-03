@@ -1,5 +1,7 @@
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { InfiniteGrid } from "../components/ui/the-infinite-grid";
+import { InfiniteGrid } from "@/components/ui/the-infinite-grid";
+import { SignInDialog, RegisterDialog } from "@/components/AuthDialog";
 
 // ── SVG Icons — colorful, meaningful, hand-crafted ────────────────────────
 
@@ -135,8 +137,22 @@ const FEATURES = [
   },
 ];
 
-export default function LandingPage() {
+interface LandingPageProps {
+  isAuthenticated: boolean;
+  onAuthSuccess: () => void;
+}
+
+export default function LandingPage({ isAuthenticated, onAuthSuccess }: LandingPageProps) {
   const navigate = useNavigate();
+  const [signInOpen, setSignInOpen] = useState(false);
+  const [registerOpen, setRegisterOpen] = useState(false);
+
+  // Auto-redirect if already logged in
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/feed");
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <div style={s.page}>
@@ -162,10 +178,10 @@ export default function LandingPage() {
           ))}
         </div>
         <div style={s.navCtas}>
-          <button style={s.navSignIn} className="nav-signin" onClick={() => navigate("/auth")}>
+          <button style={s.navSignIn} className="nav-signin" onClick={() => setSignInOpen(true)}>
             Sign In
           </button>
-          <button style={s.navSignUp} className="nav-signup" onClick={() => navigate("/auth?mode=register")}>
+          <button style={s.navSignUp} className="nav-signup" onClick={() => setRegisterOpen(true)}>
             Request Access
           </button>
         </div>
@@ -239,11 +255,11 @@ export default function LandingPage() {
 
           <div style={s.heroCtas}>
             <button style={s.ctaPrimary} className="cta-primary"
-              onClick={() => navigate("/auth?mode=register")}>
+              onClick={() => setRegisterOpen(true)}>
               Request Access →
             </button>
             <button style={s.ctaSecondary} className="cta-secondary"
-              onClick={() => navigate("/auth")}>
+              onClick={() => setSignInOpen(true)}>
               Sign In
             </button>
           </div>
@@ -309,6 +325,19 @@ export default function LandingPage() {
         </span>
         <span style={s.footerNote}>© 2026 · Built for students, by students.</span>
       </footer>
+      {/* ── Auth Dialogs ── */}
+      <SignInDialog
+        open={signInOpen}
+        onOpenChange={setSignInOpen}
+        onSwitchToRegister={() => setRegisterOpen(true)}
+        onAuthSuccess={onAuthSuccess}
+      />
+      <RegisterDialog
+        open={registerOpen}
+        onOpenChange={setRegisterOpen}
+        onSwitchToSignIn={() => setSignInOpen(true)}
+      />
+
     </div>
   );
 }

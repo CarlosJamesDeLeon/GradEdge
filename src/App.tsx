@@ -5,9 +5,11 @@ import Auth from './pages/Auth';
 import CampusFeed from './pages/CampusFeed';
 import Marketplace from './pages/Marketplace';
 import Mentorship from './pages/Mentorship';
+import ProfessorRatings from './pages/ProfessorRatings';
 import SubjectChat from './pages/SubjectChat';
 import LandingPage from './pages/LandingPage';
 import ProfilePage from './pages/ProfilePage';
+import StudyGroups from './pages/StudyGroups';
 
 function App() {
   // Simulate authentication state
@@ -16,7 +18,15 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route 
+          path="/" 
+          element={
+            <LandingPage 
+              isAuthenticated={isAuthenticated} 
+              onAuthSuccess={() => setIsAuthenticated(true)} 
+            />
+          } 
+        />
         <Route 
           path="/auth" 
           element={
@@ -31,7 +41,9 @@ function App() {
           <Route path="/feed" element={<CampusFeed />} />
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/mentorship" element={<Mentorship />} />
+          <Route path="/professor-ratings" element={<ProfessorRatings />} />
           <Route path="/chat/:subjectId" element={<SubjectChat />} />
+          <Route path="/study-groups" element={<StudyGroups />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Route>
       </Routes>

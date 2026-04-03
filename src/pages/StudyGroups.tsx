@@ -35,10 +35,10 @@ const StudyGroups: React.FC = () => {
     <div className="w-full pb-20 md:pb-0">
       <header className="mb-8 flex flex-col md:flex-row md:items-end justify-between space-y-4 md:space-y-0 relative z-10">
         <div>
-          <h1 className="text-3xl font-extrabold text-white mb-2">Study Hubs</h1>
-          <p className="text-textSecondary">Collaborate, share notes, and join virtual sessions.</p>
+          <h1 className="text-3xl font-playfair font-black text-[#F0EDE6] mb-2 uppercase tracking-tight">Study Hubs</h1>
+          <p className="text-[#F0EDE6]/60 font-medium">Collaborate, share notes, and join virtual sessions.</p>
         </div>
-        <button className="bg-primary hover:bg-blue-600 text-white px-5 py-2.5 rounded-xl font-medium flex items-center justify-center space-x-2 transition-all shadow-lg shadow-primary/20 whitespace-nowrap">
+        <button className="bg-[#C5A059] hover:bg-[#e6bb6d] text-[#000c1a] px-6 py-3 rounded-xl font-black text-xs uppercase tracking-widest flex items-center justify-center space-x-2 transition-all shadow-xl active:scale-95 whitespace-nowrap">
           <PlusCircle className="h-5 w-5" />
           <span>Create Hub</span>
         </button>
@@ -47,30 +47,28 @@ const StudyGroups: React.FC = () => {
       {/* Search Bar */}
       <div className="relative mb-8 z-10">
         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-          <Search className="h-5 w-5 text-gray-500" />
+          <Search className="h-5 w-5 text-[#C5A059]/40" />
         </div>
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search by course code or name..."
-          className="block w-full pl-11 pr-4 py-4 bg-surface border border-gray-800 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm text-lg"
+          className="block w-full pl-11 pr-4 py-4 bg-[#001225] border border-[#C5A059]/10 rounded-2xl text-[#F0EDE6] placeholder-[#F0EDE6]/20 focus:outline-none focus:border-[#C5A059]/30 transition-all shadow-sm text-lg font-bold"
         />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {MOCK_HUBS.map(hub => (
-          <div key={hub.id} className="bg-surface border border-gray-800 rounded-2xl p-6 hover:border-gray-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer relative overflow-hidden">
-            {/* Decorative gradient blur */}
-            <div className="absolute -right-6 -top-6 w-24 h-24 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-all" />
+          <div key={hub.id} className="bg-[#001225] border border-[#C5A059]/15 rounded-2xl p-6 hover:border-[#C5A059]/30 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer relative overflow-hidden">
             
             <div className="flex justify-between items-start mb-4 relative z-10">
-              <div className="px-3 py-1 bg-gray-800 text-primary font-bold rounded-lg text-sm border border-gray-700">
+              <div className="px-3 py-1 bg-[#000c1a] text-[#C5A059] font-black rounded-lg text-xs border border-[#C5A059]/10 uppercase tracking-widest">
                 {hub.course}
               </div>
               <div className="flex space-x-2">
                 {hub.activeSessions > 0 && (
-                  <div className="flex items-center space-x-1 text-xs font-semibold text-green-400 bg-green-400/10 px-2 py-1 rounded-md">
+                  <div className="flex items-center space-x-1 text-xs font-semibold text-[#10b981] bg-[#10b981]/10 px-2 py-1 rounded-md border border-[#10b981]/20">
                     <Video className="h-3 w-3" />
                     <span>Live</span>
                   </div>
@@ -78,17 +76,17 @@ const StudyGroups: React.FC = () => {
               </div>
             </div>
 
-            <h3 className="text-xl font-bold text-white mb-6 pr-4 relative z-10 line-clamp-2 min-h-[56px]">{hub.name}</h3>
+            <h3 className="text-xl font-playfair font-black text-[#F0EDE6] mb-6 pr-4 relative z-10 line-clamp-2 min-h-[56px]">{hub.name}</h3>
             
-            <div className="flex items-center justify-between text-textSecondary text-sm pt-4 border-t border-gray-800/50 relative z-10">
-              <div className="flex items-center space-x-1.5">
+            <div className="flex items-center justify-between text-[#F0EDE6]/40 text-xs font-black uppercase tracking-widest pt-4 border-t border-[#C5A059]/10 relative z-10">
+              <div className="flex items-center space-x-1.5 text-[#C5A059]">
                 <Users className="h-4 w-4" />
                 <span>{hub.members}</span>
               </div>
               
               <div className="flex items-center space-x-4">
                 {hub.newFiles > 0 && (
-                  <div className="flex items-center space-x-1 text-blue-400">
+                  <div className="flex items-center space-x-1 text-[#FFD700]">
                     <FileText className="h-4 w-4" />
                     <span>{hub.newFiles} new</span>
                   </div>

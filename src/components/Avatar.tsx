@@ -1,6 +1,6 @@
 import React from 'react';
 import { User } from 'lucide-react';
-import { cn } from './Layout';
+import { cn } from '@/lib/utils';
 
 interface AvatarProps {
   name?: string;

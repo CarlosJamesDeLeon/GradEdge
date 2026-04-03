@@ -1,13 +1,13 @@
 import React, { useState, useRef } from "react";
 
 // ── Constants ──────────────────────────────────────────────────────────────
-const OXFORD = "#002147";
-const GOLD = "#FFD700";
-const GOLD_DARK = "#c9a800";
-const SURFACE = "#F8FAFC";
-const CARD_BG = "#FFFFFF";
-const BORDER = "#E2E8F0";
-const MUTED = "#64748B";
+const OXFORD = "#F0EDE6";
+const GOLD = "#C5A059";
+const GOLD_DARK = "#FFD700";
+const SURFACE = "#000c1a";
+const CARD_BG = "#001225";
+const BORDER = "rgba(197,160,89,0.15)";
+const MUTED = "rgba(240, 237, 230, 0.4)";
 
 const VIBE_STATUSES = [
   { id: "studying", label: "Studying", icon: "📖" },
@@ -84,7 +84,7 @@ export default function ProfilePage() {
       {/* Page Header */}
       <div style={s.pageHeader}>
         <p style={s.pageLabel}>⬤ MY PROFILE</p>
-        <h1 style={s.pageTitle}>Identity Hub</h1>
+        <h1 style={{ ...s.pageTitle, fontFamily: "'Playfair Display', serif" }}>Identity Hub</h1>
       </div>
 
       <div style={s.grid}>
@@ -237,10 +237,10 @@ export default function ProfilePage() {
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 22 }}>
-      <span style={{ display: "block", width: 20, height: 3, backgroundColor: GOLD, borderRadius: 2 }} />
+      <span style={{ display: "block", width: 24, height: 2, backgroundColor: GOLD, borderRadius: 2 }} />
       <span style={{
-        fontSize: 11, fontWeight: 700, letterSpacing: "0.15em",
-        color: OXFORD, textTransform: "uppercase", fontFamily: "Inter, Roboto, sans-serif"
+        fontSize: 10, fontWeight: 900, letterSpacing: "0.25em",
+        color: GOLD, textTransform: "uppercase", fontFamily: "'Playfair Display', serif"
       }}>
         {children}
       </span>
@@ -254,7 +254,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
       <label style={{
         display: "block", fontSize: 11, fontWeight: 700,
         letterSpacing: "0.1em", color: MUTED, textTransform: "uppercase",
-        marginBottom: 6, fontFamily: "Inter, Roboto, sans-serif"
+        marginBottom: 6, fontFamily: "DM Sans, sans-serif"
       }}>
         {label}
       </label>
@@ -265,7 +265,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 
 function Toggle({ label, description, value, onChange }: { label: string; description: string; value: boolean; onChange: (v: boolean) => void }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
+    <div style={{ display: "flex", alignItems: "center", justifySelf: "space-between", gap: 16 }}>
       <div style={{ flex: 1 }}>
         <p style={{ fontSize: 14, fontWeight: 600, color: OXFORD, margin: 0 }}>{label}</p>
         <p style={{ fontSize: 12, color: MUTED, margin: "3px 0 0", lineHeight: 1.4 }}>{description}</p>
@@ -276,7 +276,7 @@ function Toggle({ label, description, value, onChange }: { label: string; descri
         style={{
           width: 48, height: 28, borderRadius: 14, border: "none", cursor: "pointer",
           position: "relative", transition: "background 0.2s", flexShrink: 0,
-          backgroundColor: value ? OXFORD : "#CBD5E1",
+          backgroundColor: value ? GOLD : "rgba(255,255,255,0.1)",
         }}
       >
         <span style={{
@@ -293,16 +293,16 @@ function Toggle({ label, description, value, onChange }: { label: string; descri
 // ── Styles ─────────────────────────────────────────────────────────────────
 const s: any = {
   wrapper: {
-    fontFamily: "Inter, Roboto, sans-serif",
+    fontFamily: "DM Sans, sans-serif",
     color: OXFORD,
   },
   pageHeader: { marginBottom: 32 },
   pageLabel: {
-    fontSize: 11, letterSpacing: "0.15em", color: GOLD_DARK,
-    fontWeight: 600, marginBottom: 6,
+    fontSize: 11, letterSpacing: "0.2em", color: GOLD,
+    fontWeight: 900, marginBottom: 6,
   },
   pageTitle: {
-    fontSize: 32, fontWeight: 700, color: OXFORD,
+    fontSize: 32, fontWeight: 900, color: OXFORD,
     margin: 0, letterSpacing: "-0.5px",
   },
   grid: {
@@ -312,10 +312,9 @@ const s: any = {
   },
   card: {
     backgroundColor: CARD_BG,
-    borderRadius: 16,
-    padding: "28px 32px",
+    borderRadius: 24,
+    padding: "32px",
     border: `1px solid ${BORDER}`,
-    boxShadow: "0 1px 4px rgba(0,33,71,0.06)",
   },
   cardSub: { fontSize: 13, color: MUTED, marginTop: -14, marginBottom: 20, lineHeight: 1.5 },
 
@@ -347,15 +346,15 @@ const s: any = {
 
   // Fields
   input: {
-    width: "100%", padding: "10px 14px", borderRadius: 8,
+    width: "100%", padding: "12px 16px", borderRadius: 12,
     border: `1.5px solid ${BORDER}`, fontSize: 14, color: OXFORD,
-    backgroundColor: SURFACE, fontFamily: "Inter, Roboto, sans-serif",
+    backgroundColor: SURFACE, fontFamily: "DM Sans, sans-serif",
     outline: "none", boxSizing: "border-box",
   },
   readOnly: {
-    padding: "10px 14px", borderRadius: 8, border: `1.5px solid ${BORDER}`,
-    fontSize: 14, color: MUTED, backgroundColor: "#F1F5F9",
-    fontFamily: "Inter, Roboto, sans-serif",
+    padding: "12px 16px", borderRadius: 12, border: `1.5px solid ${BORDER}`,
+    fontSize: 14, color: MUTED, backgroundColor: SURFACE,
+    fontFamily: "DM Sans, sans-serif",
   },
   readRow: {
     display: "flex", alignItems: "center", justifyContent: "space-between",
@@ -389,7 +388,8 @@ const s: any = {
   },
   vibeBadge: {
     display: "flex", alignItems: "center", justifyContent: "space-between",
-    padding: "12px 16px", borderRadius: 10, backgroundColor: OXFORD,
+    padding: "12px 16px", borderRadius: 12, backgroundColor: "#000c1a",
+    border: `1px solid ${BORDER}`,
   },
   vibeBadgeLabel: {
     fontSize: 10, fontWeight: 700, letterSpacing: "0.12em",
@@ -399,20 +399,20 @@ const s: any = {
 
   // Password feedback
   errorMsg: {
-    fontSize: 12, color: "#DC2626", margin: "-8px 0 12px",
-    padding: "8px 12px", backgroundColor: "#FEF2F2",
-    borderRadius: 6, border: "1px solid #FECACA",
+    fontSize: 12, color: "#ef4444", margin: "-8px 0 12px",
+    padding: "10px 14px", backgroundColor: "rgba(239, 68, 68, 0.1)",
+    borderRadius: 8, border: "1px solid rgba(239, 68, 68, 0.3)",
   },
   successMsg: {
-    fontSize: 12, color: "#16A34A", margin: "-8px 0 12px",
-    padding: "8px 12px", backgroundColor: "#F0FDF4",
-    borderRadius: 6, border: "1px solid #BBF7D0",
+    fontSize: 12, color: "#10b981", margin: "-8px 0 12px",
+    padding: "10px 14px", backgroundColor: "rgba(16, 185, 129, 0.1)",
+    borderRadius: 8, border: "1px solid rgba(16, 185, 129, 0.3)",
   },
   secondaryBtn: {
-    padding: "10px 20px", borderRadius: 8, border: `1.5px solid ${OXFORD}`,
-    backgroundColor: "transparent", color: OXFORD, fontSize: 13,
-    fontWeight: 600, cursor: "pointer", fontFamily: "Inter, Roboto, sans-serif",
-    letterSpacing: "0.04em", marginTop: 4,
+    padding: "12px 24px", borderRadius: 12, border: `1.5px solid ${GOLD}`,
+    backgroundColor: "transparent", color: GOLD, fontSize: 13,
+    fontWeight: 700, cursor: "pointer", fontFamily: "DM Sans, sans-serif",
+    letterSpacing: "0.05em", marginTop: 4,
   },
 
   // Privacy
@@ -426,8 +426,8 @@ const s: any = {
 
   // Save bar
   saveCard: {
-    background: `linear-gradient(135deg, ${OXFORD} 0%, #003a7a 100%)`,
-    border: "none",
+    background: CARD_BG,
+    border: `1px solid ${BORDER}`,
   },
   saveRow: {
     display: "flex", alignItems: "center",
@@ -436,10 +436,10 @@ const s: any = {
   saveTitle: { fontSize: 16, fontWeight: 700, color: "#fff", margin: 0 },
   saveSub: { fontSize: 12, color: "rgba(255,255,255,0.5)", margin: "4px 0 0" },
   saveBtn: {
-    padding: "12px 28px", borderRadius: 8, border: "none",
-    backgroundColor: GOLD, color: OXFORD, fontSize: 13,
-    fontWeight: 700, cursor: "pointer", fontFamily: "Inter, Roboto, sans-serif",
-    letterSpacing: "0.04em", transition: "all 0.2s", flexShrink: 0,
+    padding: "14px 32px", borderRadius: 12, border: "none",
+    backgroundColor: GOLD, color: "#000c1a", fontSize: 13,
+    fontWeight: 900, cursor: "pointer", fontFamily: "DM Sans, sans-serif",
+    letterSpacing: "0.05em", transition: "all 0.2s", flexShrink: 0,
   },
-  saveBtnFlash: { backgroundColor: "#16A34A", color: "#fff" },
+  saveBtnFlash: { backgroundColor: "#10b981", color: "#fff" },
 };

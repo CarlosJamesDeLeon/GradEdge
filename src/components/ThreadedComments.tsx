@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Send, Shield, ShieldOff, Reply } from 'lucide-react';
 import Avatar from './Avatar';
-import { cn } from './Layout';
+import { cn } from '@/lib/utils';
 
 export interface CommentType {
   id: string;

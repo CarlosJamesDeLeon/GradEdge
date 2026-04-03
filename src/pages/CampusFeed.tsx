@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Share2, MessageSquare, ShieldCheck, Star, Users, Briefcase, ChevronDown, Sparkles } from 'lucide-react';
+import { Share2, MessageSquare, ShieldCheck, Star, Briefcase, ChevronDown, Sparkles } from 'lucide-react';
 import { useOutletContext, useNavigate } from 'react-router-dom';
-import { cn } from '../components/Layout';
+import { cn } from '@/lib/utils';
 import Avatar from '../components/Avatar';
 import IdentityBox from '../components/IdentityBox';
 import ThreadedComments from '../components/ThreadedComments';
+import MyReminders from '../components/MyReminders';
 
 const COURSES_DATA = [
   {
@@ -113,10 +114,9 @@ const CampusFeed: React.FC = () => {
               <div className="h-2 w-8 bg-[#FFD700] rounded-full" />
               <span className="text-[#FFD700] font-black uppercase tracking-widest text-xs">Academic Feed</span>
           </div>
-          <h1 className={cn(
-            "text-4xl font-black transition-colors",
-            isAnonymous ? "text-slate-700" : "text-[#002147]"
-          )}>Subject Threads</h1>
+          <h1 className="text-4xl font-playfair font-black text-[#F0EDE6] transition-colors">
+            Subject Threads
+          </h1>
 
           {/* Specificity Layer: Sub-Navigation Row */}
           <div className="mt-8 flex flex-col md:flex-row md:items-center gap-4">
@@ -129,7 +129,7 @@ const CampusFeed: React.FC = () => {
                     setShowSubjectDiscovery(false);
                     setExpandedYear(null);
                   }}
-                  className="appearance-none bg-white border-2 border-[#002147] text-[#002147] px-6 py-3 pr-12 rounded-2xl font-bold text-sm focus:outline-none focus:ring-2 focus:ring-[#FFD700] transition-all cursor-pointer"
+                  className="appearance-none bg-[#001225] border-2 border-[#C5A059]/20 text-[#F0EDE6] px-6 py-3 pr-12 rounded-2xl font-bold text-sm focus:outline-none focus:ring-2 focus:ring-[#C5A059]/50 transition-all cursor-pointer"
                 >
                   <option value="">Select Course</option>
                   <option value="BSCS">BSCS</option>
@@ -137,14 +137,14 @@ const CampusFeed: React.FC = () => {
                   <option value="BSCE">BSCE</option>
                   <option value="BSME">BSME</option>
                 </select>
-                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#002147] pointer-events-none transition-transform group-hover:translate-y-[-40%]" />
+                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#C5A059] pointer-events-none transition-transform group-hover:translate-y-[-40%]" />
               </div>
 
               <div className="relative group">
                 <select
                   value={selectedYear}
                   onChange={(e) => setSelectedYear(e.target.value)}
-                  className="appearance-none bg-white border-2 border-[#002147] text-[#002147] px-6 py-3 pr-12 rounded-2xl font-bold text-sm focus:outline-none focus:ring-2 focus:ring-[#FFD700] transition-all cursor-pointer"
+                  className="appearance-none bg-[#001225] border-2 border-[#C5A059]/20 text-[#F0EDE6] px-6 py-3 pr-12 rounded-2xl font-bold text-sm focus:outline-none focus:ring-2 focus:ring-[#C5A059]/50 transition-all cursor-pointer"
                 >
                   <option value="">Select Year</option>
                   <option value="1st Year">1st Year</option>
@@ -153,7 +153,7 @@ const CampusFeed: React.FC = () => {
                   <option value="4th Year">4th Year</option>
                   <option value="All Years">All Years</option>
                 </select>
-                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#002147] pointer-events-none transition-transform group-hover:translate-y-[-40%]" />
+                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#C5A059] pointer-events-none transition-transform group-hover:translate-y-[-40%]" />
               </div>
             </div>
 
@@ -178,7 +178,7 @@ const CampusFeed: React.FC = () => {
 
         {/* Course Summary Card */}
         {selectedCourse && currentCourseData && (
-          <div className="mb-10 bg-white border-2 border-[#002147] rounded-3xl p-8 shadow-2xl shadow-[#002147]/5 animate-in fade-in slide-in-from-top-4 relative overflow-hidden group">
+          <div className="mb-10 bg-[#001225] border border-[#C5A059]/15 rounded-3xl p-8 shadow-2xl animate-in fade-in slide-in-from-top-4 relative overflow-hidden group">
              {/* Decorative Background Element */}
              <div className="absolute top-0 right-0 w-64 h-64 bg-[#FFD700]/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl group-hover:bg-[#FFD700]/10 transition-colors" />
              
@@ -188,40 +188,39 @@ const CampusFeed: React.FC = () => {
                     <Sparkles className="h-4 w-4 text-[#FFD700]" />
                     <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#FFD700]">Selected Major</span>
                   </div>
-                  <h2 className="text-3xl font-black text-[#002147] mb-3">{currentCourseData.name}</h2>
-                  <p className="text-[#002147]/60 font-bold text-sm leading-relaxed max-w-xl">
+                  <h2 className="text-3xl font-playfair font-black text-[#F0EDE6] mb-3">{currentCourseData.name}</h2>
+                  <p className="text-[#F0EDE6]/60 font-bold text-sm leading-relaxed max-w-xl">
                     {currentCourseData.description}
                   </p>
                </div>
                
                <button 
                 onClick={() => setShowSubjectDiscovery(!showSubjectDiscovery)}
-                className="group relative px-8 py-4 bg-[#002147] text-white font-black rounded-2xl overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-xl shadow-[#002147]/20 whitespace-nowrap"
+                className="group relative px-8 py-4 bg-[#C5A059] text-[#000c1a] font-black rounded-2xl overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-xl shadow-[#C5A059]/10 whitespace-nowrap"
                >
-                 <div className="absolute inset-0 bg-[#FFD700] translate-y-full group-hover:translate-y-0 transition-transform duration-300 -z-0" />
-                 <span className="relative z-10 group-hover:text-[#002147] transition-colors">Explore Subjects & Community</span>
+                 <span className="relative z-10 transition-colors">Explore Subjects & Community</span>
                  {/* Hover Glow Effect */}
-                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(circle_at_center,_rgba(255,215,0,0.4)_0%,_transparent_70%)] blur-xl" />
+                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.4)_0%,_transparent_70%)] blur-xl" />
                </button>
              </div>
 
              {/* Progressive Disclosure: Subjects */}
              {showSubjectDiscovery && (
-               <div className="mt-10 pt-10 border-t-2 border-gray-50 space-y-6 animate-in fade-in slide-in-from-top-4">
+               <div className="mt-10 pt-10 border-t border-[#C5A059]/10 space-y-6 animate-in fade-in slide-in-from-top-4">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-gray-400">Curriculum & Subject Hubs</h3>
-                    <div className="h-px flex-1 bg-gray-50 mx-4" />
+                    <h3 className="text-xs font-black uppercase tracking-widest text-[#F0EDE6]/40">Curriculum & Subject Hubs</h3>
+                    <div className="h-px flex-1 bg-[#C5A059]/10 mx-4" />
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
                     {currentCourseData.years.map(year => (
-                      <div key={year.level} className="bg-slate-50/50 rounded-2xl border border-gray-100 hover:border-[#FFD700]/30 transition-all">
+                      <div key={year.level} className="bg-[#000c1a] rounded-2xl border border-[#C5A059]/10 hover:border-[#C5A059]/30 transition-all">
                         <div 
                           className="flex justify-between items-center cursor-pointer p-5"
                           onClick={() => setExpandedYear(expandedYear === year.level ? null : year.level)}
                         >
-                          <h4 className="font-black text-[#002147] uppercase tracking-tight text-sm">{year.level}</h4>
-                          <ChevronDown className={cn("h-5 w-5 text-gray-400 transition-transform", expandedYear === year.level && "rotate-180")} />
+                          <h4 className="font-playfair font-black text-[#F0EDE6] uppercase tracking-tight text-sm">{year.level}</h4>
+                          <ChevronDown className={cn("h-5 w-5 text-[#C5A059] transition-transform", expandedYear === year.level && "rotate-180")} />
                         </div>
                         
                         {expandedYear === year.level && (
@@ -230,11 +229,11 @@ const CampusFeed: React.FC = () => {
                               <div 
                                 key={subject.id}
                                 onClick={() => navigate(`/chat/${subject.chatID}`)}
-                                className="bg-white p-4 rounded-xl border border-gray-100 hover:border-[#FFD700] hover:shadow-md transition-all cursor-pointer flex justify-between items-center group/item"
+                                className="bg-[#001225] p-4 rounded-xl border border-[#C5A059]/10 hover:border-[#C5A059] hover:shadow-2xl transition-all cursor-pointer flex justify-between items-center group/item"
                               >
-                                <span className="font-bold text-[#002147] text-sm">{subject.name}</span>
-                                <div className="p-2 rounded-lg bg-slate-50 group-hover/item:bg-[#FFD700]/10 transition-colors">
-                                  <MessageSquare className="h-4 w-4 text-gray-300 group-hover/item:text-[#FFD700] transition-colors" />
+                                <span className="font-bold text-[#F0EDE6] text-sm">{subject.name}</span>
+                                <div className="p-2 rounded-lg bg-[#000c1a] group-hover/item:bg-[#C5A059]/10 transition-colors">
+                                  <MessageSquare className="h-4 w-4 text-[#F0EDE6]/20 group-hover/item:text-[#C5A059] transition-colors" />
                                 </div>
                               </div>
                             ))}
@@ -261,8 +260,8 @@ const CampusFeed: React.FC = () => {
         <div className="space-y-8">
           {threads.map((thread) => (
             <article key={thread.id} className={cn(
-                "rounded-3xl p-8 border transition-all duration-500 group",
-                thread.isVerifiedAnswer ? "border-[#FFD700] bg-white shadow-xl shadow-[#FFD700]/5" : isAnonymous ? "bg-slate-100/50 border-slate-200" : "bg-white border-gray-100 shadow-sm hover:border-gray-200"
+                "rounded-3xl p-8 border transition-all duration-500 group bg-[#001225]",
+                thread.isVerifiedAnswer ? "border-[#FFD700] shadow-xl shadow-[#FFD700]/5" : "border-[#C5A059]/15 shadow-sm"
             )}>
               <div className="flex justify-between items-start mb-6">
                 <div className="flex space-x-4">
@@ -272,7 +271,7 @@ const CampusFeed: React.FC = () => {
                     size="lg"
                   />
                   <div>
-                    <h3 className="font-bold text-[#002147] text-lg">
+                    <h3 className="font-bold text-[#F0EDE6] text-lg">
                         {thread.isAnonymous ? "Anonymous Member" : thread.author}
                     </h3>
                     <div className="flex items-center text-sm font-semibold text-gray-400 space-x-3 mt-1 uppercase tracking-wider">
@@ -290,22 +289,19 @@ const CampusFeed: React.FC = () => {
                 )}
               </div>
               
-              <p className="text-[#002147]/80 text-xl font-medium mb-8 leading-relaxed">
+              <p className="text-[#F0EDE6]/80 text-xl font-medium mb-8 leading-relaxed">
                 {thread.content}
               </p>
 
               <div className="flex flex-wrap gap-2 mb-8">
                 {thread.tags.map(tag => (
-                  <span key={tag} className={cn(
-                      "px-4 py-1.5 text-xs font-black rounded-full uppercase tracking-tighter",
-                      isAnonymous ? "bg-slate-200 text-slate-500" : "bg-gray-100 text-gray-500"
-                  )}>
+                  <span key={tag} className="px-4 py-1.5 text-xs font-black rounded-full uppercase tracking-tighter bg-[#000c1a] text-[#C5A059] border border-[#C5A059]/10">
                     #{tag}
                   </span>
                 ))}
               </div>
 
-              <div className="flex items-center space-x-8 pt-6 border-t border-gray-50">
+              <div className="flex items-center space-x-8 pt-6 border-t border-[#C5A059]/10">
                 <button className={cn(
                     "flex items-center space-x-2 transition-colors font-bold",
                     thread.verifiedCount > 20 ? "text-[#FFD700]" : "text-gray-400 hover:text-[#FFD700]"
@@ -317,13 +313,13 @@ const CampusFeed: React.FC = () => {
                   onClick={() => setExpandedPostId(expandedPostId === thread.id ? null : thread.id)}
                   className={cn(
                     "flex items-center space-x-2 transition-colors font-bold",
-                    expandedPostId === thread.id ? "text-[#002147]" : "text-gray-400 hover:text-[#002147]"
+                    expandedPostId === thread.id ? "text-[#C5A059]" : "text-white/40 hover:text-[#C5A059]"
                   )}
                 >
                   <MessageSquare className="h-6 w-6" />
                   <span>{thread.comments === 0 ? "Add Comment" : thread.comments}</span>
                 </button>
-                <button className="flex items-center space-x-2 text-gray-400 hover:text-[#002147] transition-colors font-bold">
+                <button className="flex items-center space-x-2 text-[#F0EDE6]/20 hover:text-[#C5A059] transition-colors font-bold">
                   <Share2 className="h-6 w-6" />
                 </button>
               </div>
@@ -339,52 +335,24 @@ const CampusFeed: React.FC = () => {
 
       {/* Right Sidebar Widgets */}
       <div className="lg:col-span-1 space-y-8">
-          {/* Teacher Rating Widget */}
-          <div className="rounded-3xl p-8 border border-white/10 transition-all duration-500 bg-[#002147] text-white shadow-2xl shadow-[#002147]/20">
-              <div className="flex items-center space-x-2 mb-6 text-[#FFD700]">
-                  <Users className="h-6 w-6" />
-                  <h3 className="font-black uppercase tracking-widest text-sm">Professor Sentiment</h3>
-              </div>
-              <div className="mb-8 p-4 bg-white/5 rounded-2xl border border-white/10">
-                  <p className="text-sm font-bold opacity-60 mb-1">Current Focus</p>
-                  <p className="text-lg font-black">{selectedCourse || 'General Academic'}</p>
-              </div>
-              <div className="space-y-6">
-                  {[
-                      { label: 'Clarity', val: '92%' },
-                      { label: 'Fairness', val: '88%' },
-                      { label: 'Response Time', val: 'Fast' }
-                  ].map(stat => (
-                      <div key={stat.label} className="flex justify-between items-center group">
-                          <span className="font-bold opacity-60">{stat.label}</span>
-                          <span className="font-black text-[#FFD700] group-hover:scale-110 transition-transform">{stat.val}</span>
-                      </div>
-                  ))}
-              </div>
-              <button className="w-full mt-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all bg-[#FFD700] text-[#002147] hover:bg-white hover:text-[#002147]">
-                  View Full Report
-              </button>
-          </div>
+          <MyReminders />
 
           {/* Mentorship Bridge Preview */}
-          <div className={cn(
-              "rounded-3xl p-8 border transition-all duration-500 bg-white",
-              isAnonymous ? "border-slate-200" : "border-gray-100 shadow-sm"
-          )}>
-              <div className="flex items-center space-x-2 mb-6 text-[#002147]">
+          <div className="rounded-3xl p-8 border border-[#C5A059]/15 transition-all duration-500 bg-[#001225]">
+              <div className="flex items-center space-x-2 mb-6 text-[#C5A059]">
                   <Briefcase className="h-6 w-6" />
-                  <h3 className="font-black uppercase tracking-widest text-sm">Career Bridge</h3>
+                  <h3 className="font-playfair font-black uppercase tracking-widest text-sm text-[#F0EDE6]">Career Bridge</h3>
               </div>
-              <p className="text-sm font-semibold text-gray-500 mb-6">3 Alumni from your major are online and ready to review resumes.</p>
+              <p className="text-sm font-semibold text-[#F0EDE6]/60 mb-6">3 Alumni from your major are online and ready to review resumes.</p>
               <div className="flex -space-x-3 mb-8">
                   {[1,2,3].map(i => (
-                      <div key={i} className="h-10 w-10 rounded-full border-4 border-white bg-gray-200 overflow-hidden" />
+                      <div key={i} className="h-10 w-10 rounded-full border-4 border-[#001225] bg-[#000c1a] overflow-hidden" />
                   ))}
-                  <div className="h-10 w-10 rounded-full border-4 border-white bg-[#002147] flex items-center justify-center text-[10px] font-black text-white">
+                  <div className="h-10 w-10 rounded-full border-4 border-[#001225] bg-[#C5A059] flex items-center justify-center text-[10px] font-black text-[#000c1a]">
                       +12
                   </div>
               </div>
-              <button className="w-full py-4 border-2 border-[#002147]/10 rounded-2xl font-black text-xs uppercase tracking-widest text-[#002147] hover:bg-[#002147] hover:text-white transition-all">
+              <button className="w-full py-4 border-2 border-[#C5A059]/20 rounded-2xl font-black text-xs uppercase tracking-widest text-[#C5A059] hover:bg-[#C5A059] hover:text-[#000c1a] transition-all">
                   Join Bridge
               </button>
           </div>

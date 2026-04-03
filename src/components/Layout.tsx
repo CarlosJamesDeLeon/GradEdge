@@ -1,13 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { NavLink, Outlet, Navigate } from 'react-router-dom';
-import { ShoppingBag, LogOut, BookOpen, GraduationCap, Bell, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { ShoppingBag, LogOut, BookOpen, GraduationCap, Bell, PanelLeftClose, PanelLeftOpen, Star, Hash } from 'lucide-react';
 import Avatar from './Avatar';
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+import { cn } from '@/lib/utils';
 
 interface LayoutProps {
   isAuthenticated: boolean;
@@ -44,12 +39,13 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
     { to: '/feed', icon: BookOpen, label: 'Academic Feed' },
     { to: '/marketplace', icon: ShoppingBag, label: 'Campus Marketplace' },
     { to: '/mentorship', icon: GraduationCap, label: 'Mentorship Bridge' },
+    { to: '/professor-ratings', icon: Star, label: 'Professor Ratings' },
+    { to: '/study-groups', icon: Hash, label: 'Study Hubs' },
   ];
 
   return (
     <div className={cn(
-      "flex h-screen overflow-hidden relative transition-colors duration-500",
-      isAnonymous ? "bg-slate-50" : "bg-[#F8FAFC]"
+      "flex h-screen overflow-hidden relative transition-colors duration-500 bg-[#000c1a] text-[#F0EDE6]"
     )}>
       {/* Sidebar navigation */}
       <aside className={cn(
@@ -162,17 +158,15 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
         </div>
       </aside>
 
-      {/* Main Content Area - FIXED: Removed ml-xx margins that were causing the squish */}
+      {/* Main Content Area */}
       <div className="flex-1 min-w-0 flex flex-col h-full relative overflow-hidden">
         {/* Header */}
         <header className={cn(
           "sticky top-0 z-40 px-8 py-4 border-b backdrop-blur-md flex items-center justify-between transition-colors duration-500 flex-shrink-0",
-          isAnonymous
-            ? "bg-slate-50/80 border-slate-200"
-            : "bg-white/80 border-gray-100"
+          "bg-[#000c1a]/85 border-white/5"
         )}>
           <div className="flex items-center">
-            <h2 className={cn("text-sm font-semibold uppercase tracking-widest transition-colors", isAnonymous ? "text-slate-400" : "text-[#002147]/40")}>
+            <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C5A059]">
               Student Dashboard
             </h2>
           </div>
@@ -181,25 +175,25 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
-                className="relative p-2 text-[#002147] hover:scale-110 transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(255,215,0,0.6)] focus:outline-none"
+                className="relative p-2 text-[#F0EDE6] hover:scale-110 transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(255,215,0,0.6)] focus:outline-none"
               >
                 <Bell className="h-6 w-6" strokeWidth={1.5} />
-                <span className="absolute top-1 right-2 h-2.5 w-2.5 bg-[#FFD700] rounded-full border-2 border-white"></span>
+                <span className="absolute top-1 right-2 h-2.5 w-2.5 bg-[#FFD700] rounded-full border-2 border-[#000c1a]"></span>
               </button>
 
               {isNotificationsOpen && (
-                <div className="absolute top-12 right-0 w-80 bg-white/95 backdrop-blur-md border border-slate-200 rounded-3xl shadow-xl z-50 animate-in fade-in slide-in-from-top-2">
-                  <div className="absolute -top-2 right-3 w-4 h-4 bg-white/95 border-l border-t border-slate-200 transform rotate-45"></div>
-                  <div className="relative z-10 bg-white/95 rounded-3xl overflow-hidden">
-                    <div className="p-4 border-b border-[#002147]/5 flex items-center justify-between">
-                      <h3 className="font-black text-[#002147] uppercase tracking-widest text-xs">Notifications</h3>
+                <div className="absolute top-12 right-0 w-80 bg-[#001225]/95 backdrop-blur-md border border-white/5 rounded-3xl shadow-2xl z-50 animate-in fade-in slide-in-from-top-2">
+                  <div className="absolute -top-2 right-3 w-4 h-4 bg-[#001225]/95 border-l border-t border-white/5 transform rotate-45"></div>
+                  <div className="relative z-10 bg-[#001225]/95 rounded-3xl overflow-hidden">
+                    <div className="p-4 border-b border-white/5 flex items-center justify-between">
+                      <h3 className="font-black text-[#FFD700] uppercase tracking-widest text-xs">Notifications</h3>
                     </div>
-                    <div className="divide-y divide-[#002147]/5 max-h-96 overflow-y-auto">
-                      <div className="p-4 hover:bg-slate-50 transition-colors cursor-pointer group">
-                        <p className="text-sm font-medium text-[#002147]">
+                    <div className="divide-y divide-white/5 max-h-96 overflow-y-auto font-dm-sans">
+                      <div className="p-4 hover:bg-white/5 transition-colors cursor-pointer group">
+                        <p className="text-sm font-medium text-[#F0EDE6]">
                           Someone replied to your anonymous post in <span className="font-black text-[#FFD700]">BSCS</span>
                         </p>
-                        <p className="text-[10px] text-gray-400 font-bold tracking-widest uppercase mt-2">2m ago</p>
+                        <p className="text-[10px] text-[#F0EDE6]/40 font-bold tracking-widest uppercase mt-2">2m ago</p>
                       </div>
                     </div>
                   </div>
@@ -217,8 +211,8 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
           </div>
         </header>
 
-        {/* Scrollable Main Section - FIXED: Added overflow-x-auto to prevent card squishing */}
-        <main className="flex-1 overflow-y-auto overflow-x-auto bg-[#F8FAFC]">
+        {/* Scrollable Main Section */}
+        <main className="flex-1 overflow-y-auto overflow-x-auto bg-[#000c1a]">
           <div className="max-w-7xl mx-auto p-8 min-w-fit">
             <Outlet context={{ isAnonymous }} />
           </div>

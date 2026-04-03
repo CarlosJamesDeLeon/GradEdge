@@ -2,10 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
 @layer base {
   body {
-    background-color: #F8FAFC;
-    color: #002147;
+    background-color: #000c1a;
+    color: #F0EDE6;
+    font-family: 'DM Sans', sans-serif;
     @apply antialiased;
   }
 }
