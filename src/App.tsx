@@ -13,29 +13,29 @@ import StudyGroups from './pages/StudyGroups';
 
 function App() {
   // Simulate authentication state
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   return (
     <Router>
       <Routes>
-        <Route 
-          path="/" 
+        <Route
+          path="/"
           element={
-            <LandingPage 
-              isAuthenticated={isAuthenticated} 
-              onAuthSuccess={() => setIsAuthenticated(true)} 
+            <LandingPage
+              isAuthenticated={isAuthenticated}
+              onAuthSuccess={() => setIsAuthenticated(true)}
             />
-          } 
+          }
         />
-        <Route 
-          path="/auth" 
+        <Route
+          path="/auth"
           element={
-            isAuthenticated ? 
-            <Navigate to="/feed" /> : 
-            <Auth onAuthSuccess={() => setIsAuthenticated(true)} />
-          } 
+            isAuthenticated ?
+              <Navigate to="/feed" /> :
+              <Auth onAuthSuccess={() => setIsAuthenticated(true)} />
+          }
         />
-        
+
         {/* Protected routes wrapped in Layout */}
         <Route element={<Layout isAuthenticated={isAuthenticated} onLogout={() => setIsAuthenticated(false)} />}>
           <Route path="/feed" element={<CampusFeed />} />
