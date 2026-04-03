@@ -13,7 +13,7 @@ import StudyGroups from './pages/StudyGroups';
 
 function App() {
   // Simulate authentication state
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   return (
     <Router>
