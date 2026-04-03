@@ -94,16 +94,14 @@ const IconOrbit = ({ size = 32 }: { size?: number }) => (
 const SVG_ICONS = [IconAnonymity, IconMentorship, IconThreads, IconCompass, IconHourglass, IconOrbit];
 
 const FLOATING_ICONS = [
-  { iconIndex: 0, top: "10%", left: "6%", size: 52, delay: "0s", duration: "6s" },
-  { iconIndex: 3, top: "18%", left: "83%", size: 48, delay: "1s", duration: "7s" },
-  { iconIndex: 1, top: "58%", left: "4%", size: 56, delay: "2s", duration: "5s" },
-  { iconIndex: 5, top: "68%", left: "87%", size: 50, delay: "0.5s", duration: "8s" },
-  { iconIndex: 2, top: "36%", left: "89%", size: 46, delay: "1.5s", duration: "6.5s" },
-  { iconIndex: 4, top: "78%", left: "14%", size: 46, delay: "3s", duration: "7s" },
-  { iconIndex: 0, top: "13%", left: "54%", size: 42, delay: "2.5s", duration: "5.5s" },
-  { iconIndex: 3, top: "74%", left: "59%", size: 48, delay: "1.2s", duration: "6s" },
-  { iconIndex: 5, top: "46%", left: "2%", size: 44, delay: "0.8s", duration: "7.5s" },
-  { iconIndex: 2, top: "86%", left: "74%", size: 42, delay: "2.2s", duration: "6s" },
+  // Left column — staggered vertically, never past left: 10%
+  { iconIndex: 0, top: "12%", left: "3%", size: 48, delay: "0s", duration: "6s" },
+  { iconIndex: 1, top: "48%", left: "5%", size: 44, delay: "1.8s", duration: "7s" },
+  { iconIndex: 4, top: "78%", left: "4%", size: 40, delay: "3.2s", duration: "5.5s" },
+  // Right column — staggered vertically, never past right: 10% (left > 88%)
+  { iconIndex: 3, top: "10%", left: "90%", size: 44, delay: "1s", duration: "7.5s" },
+  { iconIndex: 2, top: "44%", left: "88%", size: 48, delay: "0.5s", duration: "6s" },
+  { iconIndex: 5, top: "74%", left: "91%", size: 42, delay: "2.4s", duration: "8s" },
 ];
 
 const STATS = [
