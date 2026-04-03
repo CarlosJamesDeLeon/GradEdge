@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { NavLink, Outlet, Navigate } from 'react-router-dom';
-import { ShoppingBag, LogOut, BookOpen, GraduationCap, Bell, PanelLeftClose, PanelLeftOpen, Star, Hash } from 'lucide-react';
+import { ShoppingBag, LogOut, BookOpen, GraduationCap, Bell, PanelLeftClose, PanelLeftOpen, Star, Hash, Shield, ShieldOff } from 'lucide-react';
 import Avatar from './Avatar';
 import { cn } from '@/lib/utils';
 
@@ -10,7 +10,7 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
-  const isAnonymous = false;
+  const [isAnonymous, setIsAnonymous] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -179,6 +179,17 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
               >
                 <Bell className="h-6 w-6" strokeWidth={1.5} />
                 <span className="absolute top-1 right-2 h-2.5 w-2.5 bg-[#FFD700] rounded-full border-2 border-[#000c1a]"></span>
+              </button>
+
+              <button
+                onClick={() => setIsAnonymous(!isAnonymous)}
+                className={cn(
+                  "p-2 transition-all duration-300 hover:scale-110 focus:outline-none",
+                  isAnonymous ? "text-[#FFD700]" : "text-[#F0EDE6]/40"
+                )}
+                title={isAnonymous ? "Disable Anonymous Mode" : "Enable Anonymous Mode"}
+              >
+                {isAnonymous ? <Shield className="h-6 w-6" /> : <ShieldOff className="h-6 w-6" />}
               </button>
 
               {isNotificationsOpen && (

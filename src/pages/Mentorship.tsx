@@ -1,6 +1,5 @@
 import React from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { cn } from '@/lib/utils';
 import { Star, ArrowRight } from 'lucide-react';
 import Avatar from '../components/Avatar';
 
