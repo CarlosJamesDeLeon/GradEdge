@@ -23,13 +23,13 @@ export default function FocusPage() {
         event.origin.includes('localhost')
       ) {
         if (event.data?.type === 'ROUTE_CHANGE') {
-          const currentPath = event.data.path;
+          // Use 'view' if provided (internal state-based navigation)
+          // Fallback to 'path' for URL-based navigation
+          const currentView = event.data.view || event.data.path;
+
           // Enable the button only on the primary dashboard views
-          if (currentPath === '/' || currentPath === '/dashboard' || currentPath === '') {
-            setIsBeginDashboard(true);
-          } else {
-            setIsBeginDashboard(false);
-          }
+          const isDashboard = ['/', '/dashboard', '', 'dashboard'].includes(currentView);
+          setIsBeginDashboard(isDashboard);
         }
       }
     };
