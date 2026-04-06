@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 
 @layer base {
   body {
@@ -18,3 +18,33 @@
   50% { transform: translateY(-4px) scale(1.02); filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5)); }
   100% { transform: translateY(0px) scale(1); filter: drop-shadow(0 0 0px rgba(255, 215, 0, 0)); }
 }
+
+/* ── Focus portal — Light Leak transition ─────────────────────────────── */
+
+@keyframes lightLeakIn {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes lightLeakOut {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Shimmer sweep on the sidebar Focus button */
+@keyframes focusShimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.focus-nav-btn:hover .focus-shimmer {
+  animation: focusShimmer 1.4s ease-in-out infinite;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(245, 240, 232, 0.25) 50%,
+    transparent 70%
+  );
+  background-size: 200% auto;
+}
+

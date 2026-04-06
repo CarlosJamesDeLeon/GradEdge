@@ -10,6 +10,7 @@ import SubjectChat from './pages/SubjectChat';
 import LandingPage from './pages/LandingPage';
 import ProfilePage from './pages/ProfilePage';
 import StudyGroups from './pages/StudyGroups';
+import FocusPage from './pages/FocusPage';
 
 function App() {
   // Simulate authentication state
@@ -46,6 +47,12 @@ function App() {
           <Route path="/study-groups" element={<StudyGroups />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Route>
+        
+        {/* Full-screen focus route outside of Layout */}
+        <Route 
+          path="/focus" 
+          element={isAuthenticated ? <FocusPage /> : <Navigate to="/" replace />} 
+        />
       </Routes>
     </Router>
   );

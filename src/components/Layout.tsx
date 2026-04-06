@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { NavLink, Outlet, Navigate } from 'react-router-dom';
-import { ShoppingBag, LogOut, BookOpen, GraduationCap, Bell, PanelLeftClose, PanelLeftOpen, Star, Hash, Shield, ShieldOff } from 'lucide-react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { NavLink, Outlet, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { ShoppingBag, LogOut, BookOpen, GraduationCap, Bell, PanelLeftClose, PanelLeftOpen, Star, Hash, Shield, ShieldOff, Sparkles } from 'lucide-react';
 import Avatar from './Avatar';
 import { cn } from '@/lib/utils';
 
@@ -10,14 +10,41 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [focusHovered, setFocusHovered] = useState(false);
+  // 'idle' | 'in' | 'out' — drives the light-leak overlay
+  const [overlayPhase, setOverlayPhase] = useState<'idle' | 'in' | 'out'>(() => {
+    return location.state?.fromFocus ? 'out' : 'idle';
+  });
+
+  useEffect(() => {
+    if (overlayPhase === 'out') {
+      const t = setTimeout(() => {
+        setOverlayPhase('idle');
+        if (location.state?.fromFocus) {
+          navigate(location.pathname, { replace: true, state: {} });
+        }
+      }, 700);
+      return () => clearTimeout(t);
+    }
+  }, [overlayPhase, location, navigate]);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
+
+  // ── Light‑leak entry: fade to white → navigate ──────────────
+  const handleFocusClick = useCallback(() => {
+    setOverlayPhase('in');
+    setTimeout(() => {
+      navigate('/focus');
+    }, 650);
+  }, [navigate]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -132,6 +159,65 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
                 </span>
               </NavLink>
             ))}
+
+            {/* ── Focus portal link — cream glow hints at Begin's light theme ── */}
+            <button
+              id="focus-nav-btn"
+              onClick={handleFocusClick}
+              onMouseEnter={() => setFocusHovered(true)}
+              onMouseLeave={() => setFocusHovered(false)}
+              className="focus-nav-btn relative flex items-center gap-3 w-full py-3 px-3 rounded-xl font-medium border-l-4 overflow-hidden transition-all duration-300 focus:outline-none"
+              style={{
+                borderColor: focusHovered ? 'rgba(245, 240, 232, 0.7)' : 'transparent',
+                background: focusHovered
+                  ? 'rgba(245, 240, 232, 0.07)'
+                  : 'transparent',
+                color: focusHovered
+                  ? 'rgba(245, 240, 232, 0.95)'
+                  : 'rgba(245, 240, 232, 0.38)',
+                boxShadow: focusHovered
+                  ? '0 0 22px rgba(245, 240, 232, 0.10), inset 0 0 14px rgba(245, 240, 232, 0.04)'
+                  : 'none',
+                transition: 'all 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
+              }}
+              title="Open Focus space — Begin app"
+            >
+              {/* Shimmer sweep overlay */}
+              <span
+                className="focus-shimmer"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  borderRadius: 'inherit',
+                  pointerEvents: 'none',
+                }}
+              />
+              <Sparkles className="h-5 w-5 flex-shrink-0" strokeWidth={1.5} />
+              <span
+                className={cn(
+                  "text-base whitespace-nowrap overflow-hidden transition-all duration-300 ease-in-out",
+                  isCollapsed ? "opacity-0 max-w-0" : "opacity-100 max-w-[200px]"
+                )}
+              >
+                Focus
+              </span>
+              {/* ✦ badge — visible only when expanded */}
+              {!isCollapsed && (
+                <span
+                  style={{
+                    marginLeft: 'auto',
+                    fontSize: 9,
+                    letterSpacing: '0.05em',
+                    opacity: focusHovered ? 0.7 : 0.3,
+                    color: 'rgba(245, 240, 232, 0.9)',
+                    transition: 'opacity 0.25s ease',
+                    flexShrink: 0,
+                  }}
+                >
+                  ✦
+                </span>
+              )}
+            </button>
           </nav>
         </div>
 
@@ -230,6 +316,29 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
         </main>
       </div>
 
+      {/* ── Light‑Leak Overlay ─────────────────────────────────────────────
+           Sits above everything (z-9999). Animates in → navigate → animates out.
+           The warm radial gradient is the 'light leak' moment of transition.
+      ──────────────────────────────────────────────────────────────────── */}
+      {overlayPhase !== 'idle' && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9999,
+            background:
+              'radial-gradient(ellipse at 30% 50%, #FFFEF7 0%, #F5F0E8 35%, #EDE8DC 65%, #E0D8CC 100%)',
+            opacity: overlayPhase === 'in' ? 1 : 0,
+            animation:
+              overlayPhase === 'in'
+                ? 'lightLeakIn 650ms cubic-bezier(0.25, 0, 0.1, 1) forwards'
+                : 'lightLeakOut 700ms cubic-bezier(0.4, 0, 0.6, 1) forwards',
+            pointerEvents: overlayPhase === 'in' ? 'all' : 'none',
+          }}
+        />
+      )}
+
       {/* Mobile Bottom Nav */}
       <nav className={cn(
         "md:hidden fixed bottom-6 left-6 right-6 border rounded-3xl flex justify-around p-3 z-40 shadow-2xl transition-all duration-500 backdrop-blur-xl",
@@ -251,6 +360,16 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
             <item.icon className="h-6 w-6" />
           </NavLink>
         ))}
+        {/* Focus — mobile */}
+        <button
+          onClick={handleFocusClick}
+          className="p-3 rounded-2xl transition-all focus:outline-none"
+          style={{ color: 'rgba(245, 240, 232, 0.55)' }}
+          title="Focus"
+          aria-label="Open Focus space"
+        >
+          <Sparkles className="h-6 w-6" strokeWidth={1.5} />
+        </button>
       </nav>
     </div>
   );
