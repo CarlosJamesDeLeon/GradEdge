@@ -10,17 +10,17 @@ import Avatar from "@/components/Avatar";
 const MOCK_PROFESSORS = [
     {
         id: "1",
-        name: "Dr. Alistair Thorne",
-        department: "Computer Science",
+        name: "Prof. Jun Albert Pardillo",
+        department: "Human Computer Interaction",
         rating: 4.8,
         metrics: { clarity: 95, fairness: 92, responseTime: 88 },
-        recentReview: "His lectures on Distributed Systems are legendary. Demanding but extremely clear.",
+        recentReview: "His lectures on Wireframes are legendary. Demanding but extremely clear.",
         image: null
     },
     {
         id: "2",
-        name: "Prof. Elena Vance",
-        department: "Quantum Physics",
+        name: "Dr. Jay Vince Serato",
+        department: "Data Structures and Algorithm",
         rating: 4.5,
         metrics: { clarity: 89, fairness: 95, responseTime: 91 },
         recentReview: "Always available for consultations. She makes complex quantum mechanics feel intuitive.",
@@ -28,11 +28,11 @@ const MOCK_PROFESSORS = [
     },
     {
         id: "3",
-        name: "Dr. Marcus Solari",
-        department: "Modern History",
+        name: "Prof. Roden",
+        department: "Computer Architecture",
         rating: 4.2,
         metrics: { clarity: 82, fairness: 85, responseTime: 78 },
-        recentReview: "Incredible storyteller. The course load is heavy, but you'll learn so much about geopolitics.",
+        recentReview: "Incredible storyteller. The course load is heavy, but you'll learn so much about computers.",
         image: null
     },
     {
