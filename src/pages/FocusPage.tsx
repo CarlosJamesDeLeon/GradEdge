@@ -10,16 +10,16 @@ export default function FocusPage() {
   const [showReturn, setShowReturn] = useState(false);
   const [returnHovered, setReturnHovered] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
-  
+
   // Controls hiding the button if user navigates deeper into Begin
-  const [isBeginDashboard, setIsBeginDashboard] = useState(true); 
+  const [isBeginDashboard, setIsBeginDashboard] = useState(true);
 
   // Listen for route changes sent by the Begin app via postMessage
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       // Ensure we only listen to messages from our trusted Begin app
       if (
-        event.origin === 'https://begin-blue.vercel.app' || 
+        event.origin === 'https://begin-blue.vercel.app' ||
         event.origin.includes('localhost')
       ) {
         if (event.data?.type === 'ROUTE_CHANGE') {
@@ -227,8 +227,8 @@ export default function FocusPage() {
         onMouseLeave={() => setReturnHovered(false)}
         style={{
           position: 'absolute',
-          bottom: 24,
-          left: 24,
+          top: 505,
+          left: 20,
           zIndex: 30,
           display: 'flex',
           alignItems: 'center',
@@ -262,11 +262,11 @@ export default function FocusPage() {
         <ArrowLeft
           size={14}
           strokeWidth={2.5}
-          style={{ 
-            transition: 'all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1)', 
+          style={{
+            transition: 'all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1)',
             transform: returnHovered ? 'translateX(-3px)' : 'none',
             color: returnHovered ? '#FFD700' : '#002147',
-            opacity: returnHovered ? 1 : 0.7 
+            opacity: returnHovered ? 1 : 0.7
           }}
         />
         <span>Exit Focus</span>

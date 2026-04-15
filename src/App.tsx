@@ -9,7 +9,7 @@ import ProfessorRatings from './pages/ProfessorRatings';
 import SubjectChat from './pages/SubjectChat';
 import LandingPage from './pages/LandingPage';
 import ProfilePage from './pages/ProfilePage';
-import StudyGroups from './pages/StudyGroups';
+import Messaging from './pages/Messaging';
 import FocusPage from './pages/FocusPage';
 
 function App() {
@@ -42,9 +42,9 @@ function App() {
           <Route path="/feed" element={<CampusFeed />} />
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/mentorship" element={<Mentorship />} />
+          <Route path="/messaging" element={<Messaging />} />
           <Route path="/professor-ratings" element={<ProfessorRatings />} />
           <Route path="/chat/:subjectId" element={<SubjectChat />} />
-          <Route path="/study-groups" element={<StudyGroups />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Route>
         

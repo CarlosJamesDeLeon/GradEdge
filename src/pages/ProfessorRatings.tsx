@@ -23,7 +23,7 @@ const MOCK_PROFESSORS = [
         department: "Data Structures and Algorithm",
         rating: 4.5,
         metrics: { clarity: 89, fairness: 95, responseTime: 91 },
-        recentReview: "Always available for consultations. She makes complex quantum mechanics feel intuitive.",
+        recentReview: "Always available for consultations. He makes complex discussions feel intuitive.",
         image: null
     },
     {
@@ -65,20 +65,22 @@ const StarRating = ({ rating }: { rating: number }) => {
     );
 };
 
-const MetricBar = ({ label, value }: { label: string; value: number }) => (
-    <div className="space-y-1.5">
-        <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-[#F0EDE6]/40">
-            <span>{label}</span>
-            <span className="text-[#C5A059]">{value}%</span>
+const MetricBar = ({ label, value }: { label: string; value: number }) => {
+    return (
+        <div className="space-y-1.5">
+            <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-[#F0EDE6]/40">
+                <span>{label}</span>
+                <span className="text-[#C5A059]">{value}%</span>
+            </div>
+            <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+                <div
+                    className="h-full bg-[#C5A059] transition-all duration-1000"
+                    style={{ width: `${value}%` }}
+                />
+            </div>
         </div>
-        <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
-            <div
-                className="h-full bg-[#C5A059] transition-all duration-1000"
-                style={{ width: `${value}%` }}
-            />
-        </div>
-    </div>
-);
+    );
+};
 
 // ── Main Page ─────────────────────────────────────────────────────────────
 
@@ -124,32 +126,35 @@ export default function ProfessorRatings() {
                 .font-dm-sans { font-family: 'DM Sans', sans-serif; }
             `}</style>
 
-            <header className="mb-12">
-                <div className="flex items-center gap-3 mb-4">
-                    <div className="h-0.5 w-12 bg-[#C5A059] rounded-full" />
-                    <span className="text-xs font-black uppercase tracking-[0.2em] text-[#C5A059]">Faculty Insights</span>
+            <header className="mb-10">
+                <div className="flex items-center space-x-2 mb-2">
+                    <div className="h-2 w-8 bg-[#FFD700] rounded-full" />
+                    <span className="text-[#FFD700] font-black uppercase tracking-widest text-xs">Faculty Insights</span>
                 </div>
-                <h1 className="text-5xl font-playfair font-black mb-4 tracking-tight">Professor Ratings</h1>
-                <p className="text-[#F0EDE6]/60 font-dm-sans text-lg max-w-2xl leading-relaxed">
+                <h1 className="text-4xl font-black text-[#F0EDE6] uppercase tracking-tight mb-2">Professor Ratings</h1>
+                <p className="text-[#F0EDE6]/80 font-medium text-base max-w-2xl leading-relaxed">
                     Peer-verified metrics and qualitative analysis on the educators shaping your academic journey.
                 </p>
             </header>
 
             {/* Search Section */}
-            <div className="flex flex-col md:flex-row gap-4 mb-12">
-                <div className="relative flex-1 group">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#F0EDE6]/30 group-focus-within:text-[#C5A059] transition-colors" />
+            <div className="flex flex-col md:flex-row gap-4 mb-10">
+                <div className="relative flex-1">
+                    <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none text-[#F0EDE6]/30">
+                        <Search className="h-5 w-5" />
+                    </div>
                     <input
                         type="text"
                         placeholder="Search by name or department..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full bg-[#001225] border border-white/5 font-dm-sans font-medium pl-12 pr-6 py-4 rounded-2xl focus:outline-none focus:ring-1 focus:ring-[#C5A059]/50 transition-all placeholder:text-[#F0EDE6]/20"
+                        className="block w-full pl-14 pr-6 py-4 border-2 font-bold transition-all focus:outline-none rounded-3xl bg-[#001225] border-[#C5A059]/10 text-[#F0EDE6] placeholder:text-[#F0EDE6]/20 focus:border-[#C5A059]/30"
                     />
                 </div>
-                <Button variant="ghost" className="h-auto py-4 px-8 rounded-2xl border-white/5 bg-[#001225] hover:bg-[#001f3f] text-[#F0EDE6]/60 font-black text-xs uppercase tracking-widest">
-                    <Filter className="mr-2 h-4 w-4" /> Filter Majors
-                </Button>
+                <button className="flex items-center justify-center space-x-2 px-8 py-4 border-2 rounded-3xl font-black text-xs uppercase tracking-widest transition-all bg-[#001225] border-[#C5A059]/10 text-[#F0EDE6]/60 hover:bg-[#001f3f]">
+                    <Filter className="h-4 w-4" />
+                    <span>Filter Majors</span>
+                </button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-8">
@@ -162,10 +167,10 @@ export default function ProfessorRatings() {
                             <div className="flex gap-4">
                                 <Avatar name={prof.name} size="xl" className="border-[#C5A059]/10" />
                                 <div>
-                                    <h3 className="text-2xl font-playfair font-bold group-hover:text-[#C5A059] transition-colors">
+                                    <h3 className="text-xl font-black text-[#F0EDE6] group-hover:text-[#C5A059] transition-colors">
                                         {prof.name}
                                     </h3>
-                                    <p className="text-xs font-black uppercase tracking-widest text-[#F0EDE6]/40 mt-1">
+                                    <p className="text-xs font-black uppercase tracking-widest text-[#FFD700] mt-1">
                                         {prof.department}
                                     </p>
                                     <div className="mt-3">
@@ -186,13 +191,13 @@ export default function ProfessorRatings() {
                                 <MessageSquare size={12} className="text-[#C5A059]" />
                                 <span className="text-[10px] font-black uppercase tracking-widest text-[#C5A059]">Latest Verified Review</span>
                             </div>
-                            <p className="text-sm font-dm-sans leading-relaxed text-[#F0EDE6]/70 italic">
+                            <p className="text-sm font-medium leading-relaxed text-[#F0EDE6]/80">
                                 &quot;{prof.recentReview}&quot;
                             </p>
                         </div>
 
                         <div className="flex items-center justify-between pt-4">
-                            <span className="text-[10px] font-black uppercase tracking-widest text-[#F0EDE6]/30 hover:text-[#C5A059] cursor-pointer transition-colors">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-[#F0EDE6]/50 hover:text-[#C5A059] cursor-pointer transition-colors">
                                 See all 42 reviews &rarr;
                             </span>
                             <Button

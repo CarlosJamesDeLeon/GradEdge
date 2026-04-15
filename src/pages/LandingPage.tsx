@@ -180,7 +180,7 @@ export default function LandingPage({ isAuthenticated, onAuthSuccess }: LandingP
             Sign In
           </button>
           <button style={s.navSignUp} className="nav-signup" onClick={() => setRegisterOpen(true)}>
-            Request Access
+            Sign up
           </button>
         </div>
       </nav>
@@ -254,7 +254,7 @@ export default function LandingPage({ isAuthenticated, onAuthSuccess }: LandingP
           <div style={s.heroCtas}>
             <button style={s.ctaPrimary} className="cta-primary"
               onClick={() => setRegisterOpen(true)}>
-              Request Access →
+              Sign up →
             </button>
             <button style={s.ctaSecondary} className="cta-secondary"
               onClick={() => setSignInOpen(true)}>

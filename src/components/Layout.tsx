@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { NavLink, Outlet, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingBag, LogOut, BookOpen, GraduationCap, Bell, PanelLeftClose, PanelLeftOpen, Star, Hash, Shield, ShieldOff, Sparkles } from 'lucide-react';
+import { ShoppingBag, LogOut, BookOpen, GraduationCap, Bell, PanelLeftClose, PanelLeftOpen, Star, Shield, ShieldOff, Sparkles, MessageSquare } from 'lucide-react';
 import Avatar from './Avatar';
 import { cn } from '@/lib/utils';
 
@@ -66,8 +66,8 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
     { to: '/feed', icon: BookOpen, label: 'Academic Feed' },
     { to: '/marketplace', icon: ShoppingBag, label: 'Campus Marketplace' },
     { to: '/mentorship', icon: GraduationCap, label: 'Mentorship Bridge' },
+    { to: '/messaging', icon: MessageSquare, label: 'Messaging', badge: 3 },
     { to: '/professor-ratings', icon: Star, label: 'Professor Ratings' },
-    { to: '/study-groups', icon: Hash, label: 'Study Hubs' },
   ];
 
   return (
@@ -148,15 +148,27 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
                   )
                 }
               >
-                <item.icon className="h-5 w-5 flex-shrink-0" strokeWidth={1.5} />
+                {/* Icon — with dot badge when collapsed */}
+                <div className="relative flex-shrink-0">
+                  <item.icon className="h-5 w-5" strokeWidth={1.5} />
+                  {'badge' in item && item.badge && isCollapsed && (
+                    <span className="absolute -top-1 -right-1 h-2 w-2 bg-[#FFD700] rounded-full" />
+                  )}
+                </div>
+                {/* Label + pill badge when expanded */}
                 <span
                   className={cn(
-                    "text-base whitespace-nowrap overflow-hidden transition-all duration-300 ease-in-out",
+                    "text-base whitespace-nowrap overflow-hidden transition-all duration-300 ease-in-out flex-1",
                     isCollapsed ? "opacity-0 max-w-0" : "opacity-100 max-w-[200px]"
                   )}
                 >
                   {item.label}
                 </span>
+                {'badge' in item && item.badge && !isCollapsed && (
+                  <span className="ml-auto flex-shrink-0 h-5 min-w-5 px-1.5 rounded-full bg-[#FFD700] text-[#000c1a] text-[10px] font-black flex items-center justify-center">
+                    {item.badge}
+                  </span>
+                )}
               </NavLink>
             ))}
 
@@ -350,7 +362,7 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
             to={item.to}
             className={({ isActive }) =>
               cn(
-                'p-3 rounded-2xl transition-all',
+                'relative p-3 rounded-2xl transition-all',
                 isActive
                   ? isAnonymous ? 'bg-slate-700 text-white' : 'bg-[#FFD700] text-[#002147]'
                   : 'text-white/50'
@@ -358,6 +370,9 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
             }
           >
             <item.icon className="h-6 w-6" />
+            {'badge' in item && item.badge && (
+              <span className="absolute top-2 right-2 h-2.5 w-2.5 bg-[#FFD700] rounded-full border-2 border-[#002147]" />
+            )}
           </NavLink>
         ))}
         {/* Focus — mobile */}
