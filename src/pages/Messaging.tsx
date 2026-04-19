@@ -58,7 +58,7 @@ const GENERAL_MESSAGES: Message[] = [
   },
   {
     id: '2',
-    sender: 'Kyle Marcos',
+    sender: 'Felix Ponce',
     time: '10:45 AM',
     badge: 'Verified',
     content: '@Sarah got you — sharing to the COMP301 Year 3 room now. It covers the last two topics on recursion.',
@@ -97,7 +97,7 @@ const ROOMS: Room[] = [
 
 const DM_CONVERSATIONS: DMConversation[] = [
   { id: 'dm1', name: 'Sarah Jenkins', status: 'online', lastMessage: 'Thanks for the notes!', time: '10:42 AM', unread: 2 },
-  { id: 'dm2', name: 'Kyle Marcos', status: 'online', lastMessage: 'No problem! Good luck', time: '9:30 AM', unread: 0 },
+  { id: 'dm2', name: 'Felix Ponce', status: 'online', lastMessage: 'No problem! Good luck', time: '9:30 AM', unread: 0 },
   { id: 'dm3', name: 'Aiko Lim', status: 'online', lastMessage: 'Study group confirmed ✓', time: 'Yesterday', unread: 1 },
   { id: 'dm4', name: 'Paula Torres', status: 'offline', lastMessage: 'See you Friday!', time: 'Mon', unread: 0 },
   { id: 'dm5', name: 'Mia Cruz', status: 'offline', lastMessage: 'Sent the slides already', time: 'Sun', unread: 0 },
@@ -105,7 +105,7 @@ const DM_CONVERSATIONS: DMConversation[] = [
 
 const CONNECTIONS: Connection[] = [
   { name: 'Sarah Jenkins', status: 'online', role: 'Active now', unread: 2 },
-  { name: 'Kyle Marcos', status: 'online', role: 'Active now', unread: 0 },
+  { name: 'Felix Ponce', status: 'online', role: 'Active now', unread: 0 },
   { name: 'Aiko Lim', status: 'online', role: 'Active now', unread: 1 },
   { name: 'Paula Torres', status: 'online', role: 'Active now', unread: 0 },
   { name: 'Rico Navarro', status: 'offline', role: '1 hour ago', unread: 0 },

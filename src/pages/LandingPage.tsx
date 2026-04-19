@@ -46,63 +46,7 @@ const IconThreads = ({ size = 32 }: { size?: number }) => (
   </svg>
 );
 
-// Compass — sky blue/gold, Direction & Purpose
-const IconCompass = ({ size = 32 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 56 56" fill="none">
-    <circle cx="28" cy="28" r="26" fill="#EFF8FF" />
-    <circle cx="28" cy="28" r="18" stroke="#3B82F6" strokeWidth="1.8" fill="white" fillOpacity="0.5" />
-    <polygon points="28,10 31,26 28,24 25,26" fill="#FFD700" />
-    <polygon points="28,46 31,30 28,32 25,30" fill="#3B82F6" fillOpacity="0.5" stroke="#3B82F6" strokeWidth="1" />
-    <line x1="10" y1="28" x2="22" y2="28" stroke="#3B82F6" strokeWidth="1.8" strokeLinecap="round" />
-    <line x1="34" y1="28" x2="46" y2="28" stroke="#3B82F6" strokeWidth="1.8" strokeLinecap="round" />
-    <circle cx="28" cy="28" r="3.5" fill="#FFD700" />
-    <circle cx="29" cy="27" r="1.2" fill="white" fillOpacity="0.7" />
-  </svg>
-);
 
-// Hourglass — amber/warm, Academic Pressure & Time
-const IconHourglass = ({ size = 32 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 56 56" fill="none">
-    <circle cx="28" cy="28" r="26" fill="#FFFBEB" />
-    <path d="M17 10 H39 L28 28 L39 46 H17 L28 28 Z"
-      fill="#F59E0B" fillOpacity="0.15" stroke="#F59E0B" strokeWidth="1.8" strokeLinejoin="round" />
-    <line x1="14" y1="10" x2="42" y2="10" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" />
-    <line x1="14" y1="46" x2="42" y2="46" stroke="#F59E0B" strokeWidth="2" strokeLinecap="round" />
-    <path d="M22 10 L28 20 L34 10" fill="#F59E0B" fillOpacity="0.3" />
-    <path d="M21 40 Q28 35 35 40" stroke="#F59E0B" strokeWidth="1.8" strokeLinecap="round" fill="none" />
-    <circle cx="28" cy="28" r="2.5" fill="#F59E0B" />
-  </svg>
-);
-
-// Orbit — emerald/gold, Knowledge System & Community
-const IconOrbit = ({ size = 32 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 56 56" fill="none">
-    <circle cx="28" cy="28" r="26" fill="#ECFDF5" />
-    <circle cx="28" cy="28" r="6" fill="#10B981" fillOpacity="0.3" />
-    <circle cx="28" cy="28" r="3" fill="#10B981" />
-    <ellipse cx="28" cy="28" rx="20" ry="9" stroke="#10B981" strokeWidth="1.8" fill="none" />
-    <ellipse cx="28" cy="28" rx="20" ry="9" stroke="#FFD700" strokeWidth="1.5" fill="none"
-      transform="rotate(60 28 28)" strokeDasharray="3 2" />
-    <ellipse cx="28" cy="28" rx="20" ry="9" stroke="#002147" strokeWidth="1" fill="none" strokeOpacity="0.3"
-      transform="rotate(120 28 28)" strokeDasharray="2 3" />
-    <circle cx="44" cy="20" r="3" fill="#FFD700" />
-    <circle cx="12" cy="36" r="2" fill="#002147" fillOpacity="0.5" />
-  </svg>
-);
-
-// ── Floating icon layout — balanced composition ────────────────────────────
-const SVG_ICONS = [IconAnonymity, IconMentorship, IconThreads, IconCompass, IconHourglass, IconOrbit];
-
-const FLOATING_ICONS = [
-  // Left column — staggered vertically, never past left: 10%
-  { iconIndex: 0, top: "12%", left: "3%", size: 48, delay: "0s", duration: "6s" },
-  { iconIndex: 1, top: "48%", left: "5%", size: 44, delay: "1.8s", duration: "7s" },
-  { iconIndex: 4, top: "78%", left: "4%", size: 40, delay: "3.2s", duration: "5.5s" },
-  // Right column — staggered vertically, never past right: 10% (left > 88%)
-  { iconIndex: 3, top: "10%", left: "90%", size: 44, delay: "1s", duration: "7.5s" },
-  { iconIndex: 2, top: "44%", left: "88%", size: 48, delay: "0.5s", duration: "6s" },
-  { iconIndex: 5, top: "74%", left: "91%", size: 42, delay: "2.4s", duration: "8s" },
-];
 
 const STATS = [
   { value: "12K+", label: "Students", color: "#FFD700" },
@@ -190,26 +134,6 @@ export default function LandingPage({ isAuthenticated, onAuthSuccess }: LandingP
         navHeight={68}
         overlay={
           <>
-            {/* Floating icon cards */}
-            {FLOATING_ICONS.map((ic, i) => {
-              const Icon = SVG_ICONS[ic.iconIndex];
-              return (
-                <div key={i} className="float-icon" style={{
-                  position: "absolute", top: ic.top, left: ic.left,
-                  width: ic.size + 24, height: ic.size + 24,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  animation: `floatBob ${ic.duration} ${ic.delay} ease-in-out infinite`,
-                  userSelect: "none", transition: "transform 0.3s ease",
-                  backdropFilter: "blur(10px)",
-                  background: "rgba(255,255,255,0.06)",
-                  borderRadius: 20,
-                  border: "1px solid rgba(255,255,255,0.10)",
-                  boxShadow: "0 8px 32px rgba(0,0,0,0.35), 0 1px 2px rgba(255,255,255,0.04)",
-                }}>
-                  <Icon size={ic.size} />
-                </div>
-              );
-            })}
 
             {/* Gold sparkles */}
             {[
