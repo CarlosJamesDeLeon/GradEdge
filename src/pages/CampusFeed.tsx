@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Share2, MessageSquare, ShieldCheck, Star, Briefcase } from 'lucide-react';
+import { Share2, MessageSquare, ShieldCheck, Star, Briefcase, ArrowUp } from 'lucide-react';
 import { useOutletContext } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import Avatar from '../components/Avatar';
@@ -19,7 +19,9 @@ const MOCK_THREADS = [
     verifiedCount: 24,
     comments: 2,
     isVerifiedAnswer: true,
-    tags: ['CS301', 'Trees']
+    tags: ['CS301', 'Trees'],
+    upvotes: 42,
+    hasUpvoted: false
   },
   {
     id: 2,
@@ -32,7 +34,9 @@ const MOCK_THREADS = [
     verifiedCount: 15,
     comments: 1,
     isVerifiedAnswer: false,
-    tags: ['Marketing', 'KPIs']
+    tags: ['Marketing', 'KPIs'],
+    upvotes: 18,
+    hasUpvoted: true
   }
 ];
 
@@ -45,6 +49,19 @@ const CampusFeed: React.FC = () => {
     setThreads(prev => prev.map(t => 
       t.id === postId ? { ...t, comments: t.comments + 1 } : t
     ));
+  };
+
+  const handleUpvote = (postId: number) => {
+    setThreads(prev => prev.map(t => {
+      if (t.id === postId) {
+        return { 
+          ...t, 
+          upvotes: t.hasUpvoted ? t.upvotes - 1 : t.upvotes + 1,
+          hasUpvoted: !t.hasUpvoted
+        };
+      }
+      return t;
+    }));
   };
 
 
@@ -117,12 +134,24 @@ const CampusFeed: React.FC = () => {
               </div>
 
               <div className="flex items-center space-x-8 pt-6 border-t border-[#C5A059]/10">
+                <button 
+                  onClick={() => handleUpvote(thread.id)}
+                  className={cn(
+                    "flex items-center space-x-2 transition-all font-black",
+                    thread.hasUpvoted 
+                      ? "text-[#C5A059] bg-[#C5A059]/10 px-4 py-1.5 rounded-full border border-[#C5A059]/30" 
+                      : "text-gray-400 hover:text-[#C5A059] px-4 py-1.5"
+                  )}
+                >
+                  <ArrowUp className={cn("h-6 w-6", thread.hasUpvoted && "stroke-[3px]")} />
+                  <span>{thread.upvotes}</span>
+                </button>
                 <button className={cn(
                     "flex items-center space-x-2 transition-colors font-bold",
                     thread.verifiedCount > 20 ? "text-[#FFD700]" : "text-gray-400 hover:text-[#FFD700]"
                 )}>
                   <ShieldCheck className={cn("h-6 w-6", thread.verifiedCount > 20 && "fill-current")} />
-                  <span>{thread.verifiedCount} Verified Accuracy</span>
+                  <span>{thread.verifiedCount} Verified</span>
                 </button>
                 <button 
                   onClick={() => setExpandedPostId(expandedPostId === thread.id ? null : thread.id)}

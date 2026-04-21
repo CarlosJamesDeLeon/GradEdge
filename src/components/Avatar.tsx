@@ -37,8 +37,8 @@ const Avatar: React.FC<AvatarProps> = ({ name, size = 'md', className, isAnonymo
       "rounded-2xl flex items-center justify-center overflow-hidden transition-all duration-300 border-2 shrink-0",
       sizeClasses[size],
       isAnonymous 
-        ? "bg-slate-300 border-white text-slate-500 shadow-inner" 
-        : "bg-[#002147] border-[#FFD700]/20 text-[#FFD700] shadow-xl shadow-[#002147]/10",
+        ? "bg-[#001225] border-[#C5A059]/20 text-[#F0EDE6]/50 shadow-inner" 
+        : "bg-[#001225] border-[#C5A059]/30 text-[#C5A059] shadow-xl shadow-[#C5A059]/5",
       className
     )}>
       {isAnonymous ? (

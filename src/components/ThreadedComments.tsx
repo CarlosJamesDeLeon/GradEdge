@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, Shield, ShieldOff, Reply } from 'lucide-react';
+import { Send, Shield, ShieldOff, Reply, ArrowUp } from 'lucide-react';
 import Avatar from './Avatar';
 import { cn } from '@/lib/utils';
 
@@ -12,6 +12,8 @@ export interface CommentType {
   isAnonymous: boolean;
   createdAt: string;
   replies?: CommentType[];
+  upvotes?: number;
+  hasUpvoted?: boolean;
 }
 
 const MOCK_COMMENTS: Record<number, CommentType[]> = {
@@ -24,6 +26,8 @@ const MOCK_COMMENTS: Record<number, CommentType[]> = {
       content: 'AVL trees strictly enforce a 1-level difference, which guarantees faster lookups but slower insertions compared to Red-Black trees.',
       isAnonymous: false,
       createdAt: '1 hour ago',
+      upvotes: 12,
+      hasUpvoted: false,
       replies: [
         {
           id: 'c2',
@@ -33,6 +37,8 @@ const MOCK_COMMENTS: Record<number, CommentType[]> = {
           content: 'That makes sense! Is there a specific use case where you would absolutely prefer RB over AVL?',
           isAnonymous: true,
           createdAt: '45 mins ago',
+          upvotes: 8,
+          hasUpvoted: true,
           replies: []
         }
       ]
@@ -47,12 +53,14 @@ const MOCK_COMMENTS: Record<number, CommentType[]> = {
       content: 'Engagement rate relative to impressions is usually the gold standard right now.',
       isAnonymous: false,
       createdAt: '3 hours ago',
+      upvotes: 3,
+      hasUpvoted: false,
       replies: []
     }
   ]
 };
 
-const CommentItem: React.FC<{ comment: CommentType, onReply: (parentId: string, content: string, isAnon: boolean) => void }> = ({ comment, onReply }) => {
+const CommentItem: React.FC<{ comment: CommentType, onReply: (parentId: string, content: string, isAnon: boolean) => void, onUpvote: (id: string) => void }> = ({ comment, onReply, onUpvote }) => {
   const [isReplying, setIsReplying] = useState(false);
   const [replyContent, setReplyContent] = useState('');
   const [replyAnon, setReplyAnon] = useState(false);
@@ -68,7 +76,7 @@ const CommentItem: React.FC<{ comment: CommentType, onReply: (parentId: string, 
   return (
     <div className="flex flex-col mb-4">
       {/* Comment Card */}
-      <div className="flex items-start space-x-4 p-4 rounded-2xl bg-white border border-transparent shadow-sm transition-all duration-300 hover:shadow-md hover:border-l-2 hover:border-l-[#FFD700] hover:border-y-gray-100 hover:border-r-gray-100 border-gray-100 group">
+      <div className="flex items-start space-x-4 p-4 rounded-2xl bg-[#000c1a] border border-[#C5A059]/15 shadow-sm transition-all duration-300 hover:shadow-md hover:border-l-2 hover:border-l-[#C5A059] hover:border-y-[#C5A059]/20 hover:border-r-[#C5A059]/20 group">
         <Avatar 
           name={comment.isAnonymous ? "Anonymous User" : comment.author} 
           isAnonymous={comment.isAnonymous} 
@@ -77,34 +85,46 @@ const CommentItem: React.FC<{ comment: CommentType, onReply: (parentId: string, 
         <div className="flex-1">
           <div className="flex items-center space-x-2 mb-1">
             <span className={cn(
-              "font-bold text-sm",
-              comment.isAnonymous ? "text-[#002147]/70 italic" : "text-[#002147]"
+              "font-playfair font-black text-base tracking-wide",
+              comment.isAnonymous ? "text-[#F0EDE6]/70 italic" : "text-[#F0EDE6]"
             )}>
               {comment.author}
             </span>
-            <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">• {comment.createdAt}</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-[#F0EDE6]/40">• {comment.createdAt}</span>
           </div>
-          <p className="text-[#002147] text-sm font-medium leading-relaxed mb-3">
+          <p className="text-[#F0EDE6]/80 text-sm font-medium leading-relaxed mb-3">
             {comment.content}
           </p>
-          <button 
-            onClick={() => setIsReplying(!isReplying)}
-            className="flex items-center space-x-1 text-xs font-black uppercase tracking-widest text-[#002147]/40 hover:text-[#FFD700] transition-colors"
-          >
-            <Reply className="h-3 w-3" />
-            <span>Reply</span>
-          </button>
+          <div className="flex items-center space-x-6">
+            <button 
+              onClick={() => onUpvote(comment.id)}
+              className={cn(
+                "flex items-center space-x-1.5 text-xs font-black uppercase tracking-widest transition-colors",
+                comment.hasUpvoted ? "text-[#C5A059]" : "text-[#F0EDE6]/40 hover:text-[#C5A059]"
+              )}
+            >
+              <ArrowUp className={cn("h-4 w-4", comment.hasUpvoted && "stroke-[3px]")} />
+              <span>{comment.upvotes || 0}</span>
+            </button>
+            <button 
+              onClick={() => setIsReplying(!isReplying)}
+              className="flex items-center space-x-1.5 text-xs font-black uppercase tracking-widest text-[#F0EDE6]/40 hover:text-[#C5A059] transition-colors"
+            >
+              <Reply className="h-4 w-4" />
+              <span>Reply</span>
+            </button>
+          </div>
 
           {/* Inline Reply Input */}
           {isReplying && (
-            <div className="mt-4 pt-4 border-t border-gray-50 flex flex-col space-y-3 animate-in slide-in-from-top-2">
+            <div className="mt-4 pt-4 border-t border-[#C5A059]/10 flex flex-col space-y-3 animate-in slide-in-from-top-2">
               <input
                 type="text"
                 autoFocus
                 placeholder="Write a reply..."
                 value={replyContent}
                 onChange={(e) => setReplyContent(e.target.value)}
-                className="w-full bg-slate-50 border-2 border-[#002147]/10 rounded-xl px-4 py-2 text-sm font-medium text-[#002147] focus:outline-none focus:border-[#002147] focus:ring-2 focus:ring-[#FFD700]/30 transition-all"
+                className="w-full bg-[#001225] border-2 border-[#C5A059]/20 rounded-xl px-4 py-2 text-sm font-medium text-[#F0EDE6] focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/30 transition-all placeholder:text-[#F0EDE6]/30"
               />
               <div className="flex items-center justify-between">
                 <button
@@ -112,8 +132,8 @@ const CommentItem: React.FC<{ comment: CommentType, onReply: (parentId: string, 
                   className={cn(
                     "flex items-center space-x-2 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all border-2",
                     replyAnon 
-                      ? "bg-[#FFD700]/10 border-[#FFD700] text-[#002147]" 
-                      : "bg-white border-gray-200 text-[#002147]/40 hover:border-[#FFD700]/30 hover:text-[#FFD700]"
+                      ? "bg-[#C5A059]/10 border-[#C5A059] text-[#C5A059]" 
+                      : "bg-[#001225] border-[#C5A059]/20 text-[#F0EDE6]/40 hover:border-[#C5A059]/30 hover:text-[#C5A059]"
                   )}
                 >
                   {replyAnon ? <ShieldOff className="h-3 w-3" /> : <Shield className="h-3 w-3" />}
@@ -122,7 +142,7 @@ const CommentItem: React.FC<{ comment: CommentType, onReply: (parentId: string, 
                 <button
                   onClick={handleReplySubmit}
                   disabled={!replyContent.trim()}
-                  className="bg-[#002147] text-white px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider disabled:opacity-50 transition-colors hover:bg-black"
+                  className="bg-[#C5A059] text-[#000c1a] px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider disabled:opacity-50 transition-colors hover:bg-[#D4AF37]"
                 >
                   Send Reply
                 </button>
@@ -134,9 +154,9 @@ const CommentItem: React.FC<{ comment: CommentType, onReply: (parentId: string, 
 
       {/* Nested Replies */}
       {comment.replies && comment.replies.length > 0 && (
-        <div className="ml-8 mt-4 pl-4 border-l border-[#002147]/20 flex flex-col space-y-4">
+        <div className="ml-8 mt-4 pl-4 border-l border-[#C5A059]/20 flex flex-col space-y-4">
           {comment.replies.map(reply => (
-            <CommentItem key={reply.id} comment={reply} onReply={onReply} />
+            <CommentItem key={reply.id} comment={reply} onReply={onReply} onUpvote={onUpvote} />
           ))}
         </div>
       )}
@@ -157,24 +177,24 @@ export const CommentInput: React.FC<{ onPost: (content: string, isAnon: boolean)
   };
 
   return (
-    <div className="flex flex-col space-y-3 bg-white p-4 rounded-2xl border-2 border-[#002147] shadow-sm focus-within:ring-4 focus-within:ring-[#FFD700]/10 transition-all duration-300">
+    <div className="flex flex-col space-y-3 bg-[#000c1a] p-4 rounded-2xl border border-[#C5A059]/20 shadow-sm focus-within:ring-4 focus-within:ring-[#C5A059]/10 transition-all duration-300">
       <div className="flex items-start space-x-3">
         <Avatar name="Janet Doe" isAnonymous={isAnonymous} size="sm" />
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="Add to the discussion..."
-          className="w-full bg-transparent border-none focus:ring-0 text-[#002147] font-medium text-sm resize-none h-10 min-h-[40px] pt-1"
+          className="w-full bg-transparent border-none focus:ring-0 text-[#F0EDE6] placeholder:text-[#F0EDE6]/30 font-medium text-sm resize-none h-10 min-h-[40px] pt-1"
         />
       </div>
-      <div className="flex items-center justify-between border-t border-gray-50 pt-3">
+      <div className="flex items-center justify-between border-t border-[#C5A059]/10 pt-3">
         <button
           onClick={() => setIsAnonymous(!isAnonymous)}
           className={cn(
             "flex items-center space-x-2 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all border-2",
             isAnonymous 
-              ? "bg-[#FFD700]/10 border-[#FFD700] text-[#002147] shadow-sm" 
-              : "bg-white border-gray-200 text-[#002147]/40 hover:border-[#FFD700]/30 hover:text-[#FFD700]"
+              ? "bg-[#C5A059]/10 border-[#C5A059] text-[#C5A059] shadow-sm" 
+              : "bg-[#001225] border-[#C5A059]/20 text-[#F0EDE6]/40 hover:border-[#C5A059]/30 hover:text-[#C5A059]"
           )}
         >
           {isAnonymous ? <ShieldOff className="h-3 w-3" /> : <Shield className="h-3 w-3" />}
@@ -183,7 +203,7 @@ export const CommentInput: React.FC<{ onPost: (content: string, isAnon: boolean)
         <button
           onClick={handleSubmit}
           disabled={!content.trim()}
-          className="flex items-center space-x-2 bg-[#FFD700] text-[#002147] hover:bg-[#FFC000] px-5 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all hover:-translate-y-0.5 shadow-lg shadow-[#FFD700]/20 disabled:opacity-50 disabled:grayscale active:scale-95"
+          className="flex items-center space-x-2 bg-[#C5A059] text-[#000c1a] hover:bg-[#D4AF37] px-5 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all hover:-translate-y-0.5 shadow-lg shadow-[#C5A059]/20 disabled:opacity-50 disabled:grayscale active:scale-95"
         >
           <span>Send</span>
           <Send className="h-3 w-3" />
@@ -210,6 +230,8 @@ const ThreadedComments: React.FC<ThreadedCommentsProps> = ({ postId, onCommentAd
       content,
       isAnonymous,
       createdAt: 'Just now',
+      upvotes: 0,
+      hasUpvoted: false,
       replies: []
     };
     setComments([...comments, newComment]);
@@ -228,6 +250,24 @@ const ThreadedComments: React.FC<ThreadedCommentsProps> = ({ postId, onCommentAd
     });
   };
 
+  const traverseAndUpvote = (nodes: CommentType[], commentId: string): CommentType[] => {
+    return nodes.map(node => {
+      if (node.id === commentId) {
+        const currentlyUpvoted = node.hasUpvoted || false;
+        const currentUpvotes = node.upvotes || 0;
+        return { 
+          ...node, 
+          upvotes: currentlyUpvoted ? currentUpvotes - 1 : currentUpvotes + 1, 
+          hasUpvoted: !currentlyUpvoted 
+        };
+      }
+      if (node.replies) {
+        return { ...node, replies: traverseAndUpvote(node.replies, commentId) };
+      }
+      return node;
+    });
+  };
+
   const handleReply = (parentId: string, content: string, isAnonymous: boolean) => {
     const reply: CommentType = {
       id: `new-reply-${Date.now()}`,
@@ -237,6 +277,8 @@ const ThreadedComments: React.FC<ThreadedCommentsProps> = ({ postId, onCommentAd
       content,
       isAnonymous,
       createdAt: 'Just now',
+      upvotes: 0,
+      hasUpvoted: false,
       replies: []
     };
     setComments(traverseAndAddReply(comments, parentId, reply));
@@ -244,10 +286,10 @@ const ThreadedComments: React.FC<ThreadedCommentsProps> = ({ postId, onCommentAd
   };
 
   return (
-    <div className="mt-6 pt-6 border-t border-gray-100 flex flex-col space-y-6 animate-in slide-in-from-top-4 fade-in duration-500">
+    <div className="mt-6 pt-6 border-t border-[#C5A059]/10 flex flex-col space-y-6 animate-in slide-in-from-top-4 fade-in duration-500">
       <div className="flex flex-col space-y-4">
         {comments.map(comment => (
-          <CommentItem key={comment.id} comment={comment} onReply={handleReply} />
+          <CommentItem key={comment.id} comment={comment} onReply={handleReply} onUpvote={(id) => setComments(traverseAndUpvote(comments, id))} />
         ))}
       </div>
 

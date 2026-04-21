@@ -5,15 +5,12 @@ import Avatar from '@/components/Avatar';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 type Tab = 'general' | 'room' | 'dm';
-type Badge = 'Top Accuracy' | 'Verified' | 'Monitor';
-
 interface Message {
   id: string;
   sender: string;
   isYou?: boolean;
   time: string;
   content: string;
-  badge?: Badge | null;
 }
 
 interface Connection {
@@ -42,39 +39,30 @@ interface DMConversation {
 }
 
 // ── Mock Data ─────────────────────────────────────────────────────────────────
-const BADGE_STYLES: Record<Badge, string> = {
-  'Top Accuracy': 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-  'Verified': 'bg-sky-500/20 text-sky-400 border-sky-500/30',
-  'Monitor': 'bg-orange-500/20 text-orange-400 border-orange-500/30',
-};
 
 const GENERAL_MESSAGES: Message[] = [
   {
     id: '1',
-    sender: 'Sarah Jenkins',
+    sender: 'Renz Etcuban',
     time: '10:42 AM',
-    badge: 'Top Accuracy',
     content: "Anyone have notes from yesterday's COMP301 lecture? I missed the last 20 minutes.",
   },
   {
     id: '2',
     sender: 'Felix Ponce',
     time: '10:45 AM',
-    badge: 'Verified',
-    content: '@Sarah got you — sharing to the COMP301 Year 3 room now. It covers the last two topics on recursion.',
+    content: '@Renz got you — sharing to the COMP301 Year 3 room now. It covers the last two topics on recursion.',
   },
   {
     id: '3',
     sender: 'Aiko Lim',
     time: '10:47 AM',
-    badge: null,
     content: 'Reminder: Study group for midterms this Friday at 6pm in the library, Room 204. DM me to join the group chat!',
   },
   {
     id: '4',
     sender: 'Janet Doe',
     time: '10:48 AM',
-    badge: null,
     isYou: true,
     content: "Thanks Kyle! Aiko count me in for Friday — I really need this before midterms.",
   },
@@ -82,7 +70,6 @@ const GENERAL_MESSAGES: Message[] = [
     id: '5',
     sender: 'Rico Navarro',
     time: '10:57 AM',
-    badge: 'Monitor',
     content: "Aiko I'll come too! Also posting my COMP301 summary notes to the Specific Room for Year 3 later today.",
   },
 ];
@@ -96,7 +83,7 @@ const ROOMS: Room[] = [
 ];
 
 const DM_CONVERSATIONS: DMConversation[] = [
-  { id: 'dm1', name: 'Sarah Jenkins', status: 'online', lastMessage: 'Thanks for the notes!', time: '10:42 AM', unread: 2 },
+  { id: 'dm1', name: 'Renz Etcuban!', status: 'online', lastMessage: 'Thanks for the notes!', time: '10:42 AM', unread: 2 },
   { id: 'dm2', name: 'Felix Ponce', status: 'online', lastMessage: 'No problem! Good luck', time: '9:30 AM', unread: 0 },
   { id: 'dm3', name: 'Aiko Lim', status: 'online', lastMessage: 'Study group confirmed ✓', time: 'Yesterday', unread: 1 },
   { id: 'dm4', name: 'Paula Torres', status: 'offline', lastMessage: 'See you Friday!', time: 'Mon', unread: 0 },
@@ -104,7 +91,7 @@ const DM_CONVERSATIONS: DMConversation[] = [
 ];
 
 const CONNECTIONS: Connection[] = [
-  { name: 'Sarah Jenkins', status: 'online', role: 'Active now', unread: 2 },
+  { name: 'Renz Etcuban', status: 'online', role: 'Active now', unread: 2 },
   { name: 'Felix Ponce', status: 'online', role: 'Active now', unread: 0 },
   { name: 'Aiko Lim', status: 'online', role: 'Active now', unread: 1 },
   { name: 'Paula Torres', status: 'online', role: 'Active now', unread: 0 },
@@ -138,6 +125,45 @@ const Messaging: React.FC = () => {
 
   const totalUnread = DM_CONVERSATIONS.reduce((sum, dm) => sum + dm.unread, 0);
 
+  const getDisplayMessages = (): Message[] => {
+    if (activeTab === 'general') return GENERAL_MESSAGES;
+    if (activeTab === 'room') {
+      return [
+        {
+          id: 'room-1',
+          sender: 'Kyle Roberts',
+          time: '9:00 AM',
+          content: `Welcome to ${activeRoom.code}! Post any class-specific questions here.`,
+        },
+        {
+          id: 'room-2',
+          sender: 'Janet Doe',
+          isYou: true,
+          time: '9:05 AM',
+          content: 'Thanks Kyle!',
+        }
+      ];
+    }
+    if (activeTab === 'dm') {
+      return [
+        {
+          id: 'dm-1',
+          sender: 'Janet Doe',
+          isYou: true,
+          time: 'Earlier',
+          content: 'Hey! Just checking in about the group project meeting later this week.',
+        },
+        {
+          id: 'dm-2',
+          sender: activeDM.name,
+          time: activeDM.time,
+          content: activeDM.lastMessage,
+        }
+      ];
+    }
+    return [];
+  };
+
   const getInputPlaceholder = () => {
     if (activeTab === 'general') return 'Share something with everyone...';
     if (activeTab === 'room') return `Message #${activeRoom.code}...`;
@@ -145,7 +171,7 @@ const Messaging: React.FC = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-64px)] flex flex-col -mx-8 -mt-8">
+    <div className="h-[calc(100vh-73px)] flex flex-col -mx-8 -my-8">
 
       {/* ── Tab Bar ──────────────────────────────────────────────────── */}
       <div className="flex items-center gap-1 px-6 py-3 border-b border-white/5 flex-shrink-0">
@@ -344,7 +370,7 @@ const Messaging: React.FC = () => {
               <div className="flex-1 h-px bg-white/5" />
             </div>
 
-            {GENERAL_MESSAGES.map(msg => (
+            {getDisplayMessages().map(msg => (
               <div
                 key={msg.id}
                 className={cn('flex gap-3 items-start', msg.isYou && 'flex-row-reverse')}
@@ -356,14 +382,6 @@ const Messaging: React.FC = () => {
                   {!msg.isYou && (
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-black text-[#F0EDE6]">{msg.sender}</span>
-                      {msg.badge && (
-                        <span className={cn(
-                          'text-[9px] font-black px-2 py-0.5 rounded-full border uppercase tracking-wider whitespace-nowrap',
-                          BADGE_STYLES[msg.badge]
-                        )}>
-                          {msg.badge}
-                        </span>
-                      )}
                       <span className="text-[10px] text-[#F0EDE6]/25">{msg.time}</span>
                     </div>
                   )}

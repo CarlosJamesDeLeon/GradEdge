@@ -32,7 +32,7 @@ const IdentityBox: React.FC<IdentityBoxProps> = ({
         : "border-[#C5A059]/15"
     )}>
       {/* Header Info */}
-      <div className="p-6 flex items-center justify-between border-b border-gray-50">
+      <div className="p-6 flex items-center justify-between border-b border-[#C5A059]/10">
         <div className="flex items-center space-x-4">
           <Avatar 
             name={userName} 
@@ -44,15 +44,15 @@ const IdentityBox: React.FC<IdentityBoxProps> = ({
             <h3 className="font-playfair font-black text-sm transition-colors duration-300 text-[#F0EDE6]">
               {isAnonymous ? "Anonymous Student" : userName}
             </h3>
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center">
+            <p className="text-[10px] font-bold text-[#F0EDE6]/40 uppercase tracking-widest flex items-center">
               {isAnonymous ? (
                 <>
-                  <Shield className="h-3 w-3 mr-1 text-[#002147]/40" />
+                  <Shield className="h-3 w-3 mr-1 text-[#F0EDE6]/40" />
                   Safe Haven Active
                 </>
               ) : (
                 <>
-                  <Sparkles className="h-3 w-3 mr-1 text-[#FFD700]" />
+                  <Sparkles className="h-3 w-3 mr-1 text-[#C5A059]" />
                   Verified Identity
                 </>
               )}

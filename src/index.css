@@ -11,6 +11,25 @@
     font-family: 'DM Sans', sans-serif;
     @apply antialiased;
   }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(240, 237, 230, 0.1);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(240, 237, 230, 0.2);
+  }
 }
 
 @keyframes prestige-pulse {
