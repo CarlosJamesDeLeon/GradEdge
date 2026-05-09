@@ -91,14 +91,21 @@ const Layout: React.FC<LayoutProps> = ({ isAuthenticated, onLogout }) => {
                 isCollapsed ? "w-0 opacity-0" : "w-9 opacity-100 mr-2"
               )}
             >
-              <img
-                src="/Gemini_Generated_Image_k7d8mfk7d8mfk7d8.png"
-                alt="GradEdge Logo"
+              <svg
+                viewBox="0 0 56 56"
+                fill="none"
                 className={cn(
-                  "w-9 h-9 object-contain flex-shrink-0 animate-[prestige-pulse_4s_ease-in-out_infinite]",
+                  "w-9 h-9 flex-shrink-0 animate-[prestige-pulse_4s_ease-in-out_infinite]",
                   isAnonymous && "brightness-0 opacity-50"
                 )}
-              />
+              >
+                <polygon points="28,3 51,16 51,40 28,53 5,40 5,16"
+                  fill="rgba(255,215,0,0.08)" stroke="rgba(255,215,0,0.25)" strokeWidth="1.5" />
+                <polygon points="28,13 42,21 42,35 28,43 14,35 14,21"
+                  fill="rgba(255,215,0,0.12)" stroke="#FFD700" strokeWidth="1.5" />
+                <circle cx="28" cy="28" r="5" fill="#FFD700" />
+                <circle cx="28" cy="28" r="2" fill="#002147" opacity="0.7" />
+              </svg>
             </div>
 
             {/* Brand text */}

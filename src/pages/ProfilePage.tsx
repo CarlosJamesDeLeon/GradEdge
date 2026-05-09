@@ -240,7 +240,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
       <span style={{ display: "block", width: 24, height: 2, backgroundColor: GOLD, borderRadius: 2 }} />
       <span style={{
         fontSize: 10, fontWeight: 900, letterSpacing: "0.25em",
-        color: GOLD, textTransform: "uppercase", fontFamily: "'Playfair Display', serif"
+        color: GOLD, textTransform: "uppercase", fontFamily: "'DM Sans', sans-serif"
       }}>
         {children}
       </span>
@@ -254,7 +254,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
       <label style={{
         display: "block", fontSize: 11, fontWeight: 700,
         letterSpacing: "0.1em", color: MUTED, textTransform: "uppercase",
-        marginBottom: 6, fontFamily: "DM Sans, sans-serif"
+        marginBottom: 6, fontFamily: "'DM Sans', sans-serif"
       }}>
         {label}
       </label>
@@ -293,7 +293,7 @@ function Toggle({ label, description, value, onChange }: { label: string; descri
 // ── Styles ─────────────────────────────────────────────────────────────────
 const s: any = {
   wrapper: {
-    fontFamily: "DM Sans, sans-serif",
+    fontFamily: "'DM Sans', sans-serif",
     color: OXFORD,
   },
   pageHeader: { marginBottom: 32 },
@@ -333,7 +333,7 @@ const s: any = {
   avatarInitials: {
     width: "100%", height: "100%", display: "flex", alignItems: "center",
     justifyContent: "center", color: GOLD, fontWeight: 700,
-    fontSize: 20, fontFamily: "Inter, Roboto, sans-serif",
+    fontSize: 20, fontFamily: "'DM Sans', sans-serif",
   },
   avatarOverlay: {
     position: "absolute", inset: 0, backgroundColor: "rgba(0,33,71,0.65)",
@@ -348,24 +348,24 @@ const s: any = {
   input: {
     width: "100%", padding: "12px 16px", borderRadius: 12,
     border: `1.5px solid ${BORDER}`, fontSize: 14, color: OXFORD,
-    backgroundColor: SURFACE, fontFamily: "DM Sans, sans-serif",
+    backgroundColor: SURFACE, fontFamily: "'DM Sans', sans-serif",
     outline: "none", boxSizing: "border-box",
   },
   readOnly: {
     padding: "12px 16px", borderRadius: 12, border: `1.5px solid ${BORDER}`,
     fontSize: 14, color: MUTED, backgroundColor: SURFACE,
-    fontFamily: "DM Sans, sans-serif",
+    fontFamily: "'DM Sans', sans-serif",
   },
   readRow: {
     display: "flex", alignItems: "center", justifyContent: "space-between",
     padding: "10px 14px", borderRadius: 8, border: `1.5px solid ${BORDER}`,
     backgroundColor: SURFACE,
   },
-  readVal: { fontSize: 14, color: OXFORD, fontFamily: "Inter, Roboto, sans-serif" },
+  readVal: { fontSize: 14, color: OXFORD, fontFamily: "'DM Sans', sans-serif" },
   editBtn: {
     fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: GOLD_DARK,
     background: "none", border: "none", cursor: "pointer",
-    fontFamily: "Inter, Roboto, sans-serif", textTransform: "uppercase",
+    fontFamily: "'DM Sans', sans-serif", textTransform: "uppercase",
   },
 
   // Vibe
@@ -374,7 +374,7 @@ const s: any = {
     display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
     padding: "16px 12px", borderRadius: 12, border: `1.5px solid ${BORDER}`,
     backgroundColor: SURFACE, cursor: "pointer", position: "relative",
-    transition: "all 0.15s", fontFamily: "Inter, Roboto, sans-serif",
+    transition: "all 0.15s", fontFamily: "'DM Sans', sans-serif",
   },
   vibeBtnOn: {
     border: `1.5px solid ${GOLD}`, backgroundColor: "rgba(255,215,0,0.07)",
@@ -395,7 +395,7 @@ const s: any = {
     fontSize: 10, fontWeight: 700, letterSpacing: "0.12em",
     color: "rgba(255,255,255,0.45)", textTransform: "uppercase",
   },
-  vibeBadgeValue: { fontSize: 14, fontWeight: 600, color: GOLD, fontFamily: "Inter, Roboto, sans-serif" },
+  vibeBadgeValue: { fontSize: 14, fontWeight: 600, color: GOLD, fontFamily: "'DM Sans', sans-serif" },
 
   // Password feedback
   errorMsg: {
@@ -411,7 +411,7 @@ const s: any = {
   secondaryBtn: {
     padding: "12px 24px", borderRadius: 12, border: `1.5px solid ${GOLD}`,
     backgroundColor: "transparent", color: GOLD, fontSize: 13,
-    fontWeight: 700, cursor: "pointer", fontFamily: "DM Sans, sans-serif",
+    fontWeight: 700, cursor: "pointer", fontFamily: "'DM Sans', sans-serif",
     letterSpacing: "0.05em", marginTop: 4,
   },
 
@@ -438,7 +438,7 @@ const s: any = {
   saveBtn: {
     padding: "14px 32px", borderRadius: 12, border: "none",
     backgroundColor: GOLD, color: "#000c1a", fontSize: 13,
-    fontWeight: 900, cursor: "pointer", fontFamily: "DM Sans, sans-serif",
+    fontWeight: 900, cursor: "pointer", fontFamily: "'DM Sans', sans-serif",
     letterSpacing: "0.05em", transition: "all 0.2s", flexShrink: 0,
   },
   saveBtnFlash: { backgroundColor: "#10b981", color: "#fff" },

@@ -159,7 +159,7 @@ export default function FocusPage() {
                 fontSize: 22,
                 fontWeight: 300,
                 color: '#2D2520',
-                fontFamily: "'Georgia', 'Times New Roman', serif",
+                fontFamily: "'Playfair Display', serif",
                 margin: '0 0 6px',
                 letterSpacing: '-0.3px',
               }}
@@ -170,7 +170,7 @@ export default function FocusPage() {
               style={{
                 fontSize: 11,
                 color: '#B5AFA7',
-                fontFamily: 'system-ui, -apple-system, sans-serif',
+                fontFamily: "'DM Sans', sans-serif",
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
               }}
@@ -250,7 +250,7 @@ export default function FocusPage() {
           pointerEvents: isVisible ? 'all' : 'none',
           transform: isVisible ? (returnHovered ? 'translateY(-2px)' : 'translateY(0)') : 'translateY(12px)',
           transition: 'all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1)',
-          fontFamily: "'DM Sans', system-ui, sans-serif",
+          fontFamily: "'DM Sans', sans-serif",
           boxShadow: returnHovered
             ? '0 8px 24px rgba(0, 33, 71, 0.25), inset 0 0 0 1px rgba(255, 215, 0, 0.1)'
             : '0 4px 12px rgba(0, 33, 71, 0.06), 0 2px 4px rgba(0, 33, 71, 0.03)',

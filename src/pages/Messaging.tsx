@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Search, Hash, ChevronDown, Users, Circle, Globe, Lock } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import Avatar from '@/components/Avatar';
 
@@ -83,7 +84,8 @@ const ROOMS: Room[] = [
 ];
 
 const DM_CONVERSATIONS: DMConversation[] = [
-  { id: 'dm1', name: 'Renz Etcuban!', status: 'online', lastMessage: 'Thanks for the notes!', time: '10:42 AM', unread: 2 },
+  { id: 'dm-alex', name: 'Alex J.', status: 'online', lastMessage: 'Hi! Is this still available?', time: 'Just now', unread: 0 },
+  { id: 'dm1', name: 'Renz Etcuban', status: 'online', lastMessage: 'Thanks for the notes!', time: '10:42 AM', unread: 2 },
   { id: 'dm2', name: 'Felix Ponce', status: 'online', lastMessage: 'No problem! Good luck', time: '9:30 AM', unread: 0 },
   { id: 'dm3', name: 'Aiko Lim', status: 'online', lastMessage: 'Study group confirmed ✓', time: 'Yesterday', unread: 1 },
   { id: 'dm4', name: 'Paula Torres', status: 'offline', lastMessage: 'See you Friday!', time: 'Mon', unread: 0 },
@@ -102,12 +104,30 @@ const CONNECTIONS: Connection[] = [
 
 // ── Component ─────────────────────────────────────────────────────────────────
 const Messaging: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<Tab>('general');
+  const location = useLocation();
+  const navState = location.state as { tab?: Tab; sellerName?: string } | null;
+
+  // Pre-select tab + DM when navigated from Marketplace
+  const initialTab: Tab = navState?.tab ?? 'general';
+  const initialDM = navState?.sellerName
+    ? (DM_CONVERSATIONS.find(d => d.name === navState.sellerName) ?? DM_CONVERSATIONS[0])
+    : DM_CONVERSATIONS[0];
+
+  const [activeTab, setActiveTab] = useState<Tab>(initialTab);
   const [activeRoom, setActiveRoom] = useState<Room>(ROOMS[0]);
-  const [activeDM, setActiveDM] = useState<DMConversation>(DM_CONVERSATIONS[0]);
+  const [activeDM, setActiveDM] = useState<DMConversation>(initialDM);
   const [messageInput, setMessageInput] = useState('');
   const [connectionSearch, setConnectionSearch] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // When location state changes (re-navigation from marketplace)
+  useEffect(() => {
+    if (navState?.tab) setActiveTab(navState.tab);
+    if (navState?.sellerName) {
+      const dm = DM_CONVERSATIONS.find(d => d.name === navState.sellerName);
+      if (dm) setActiveDM(dm);
+    }
+  }, [location.state]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -145,6 +165,19 @@ const Messaging: React.FC = () => {
       ];
     }
     if (activeTab === 'dm') {
+      // Show a marketplace-oriented opener if this is a seller DM
+      const isSellerDM = activeDM.id === 'dm-alex';
+      if (isSellerDM) {
+        return [
+          {
+            id: 'dm-seller-1',
+            sender: 'Janet Doe',
+            isYou: true,
+            time: 'Just now',
+            content: "Hi! I saw your listing on the Campus Marketplace. Is the item still available?",
+          },
+        ];
+      }
       return [
         {
           id: 'dm-1',

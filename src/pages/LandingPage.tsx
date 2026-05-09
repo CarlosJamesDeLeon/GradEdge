@@ -101,29 +101,33 @@ export default function LandingPage({ isAuthenticated, onAuthSuccess }: LandingP
       <style>{css}</style>
 
       {/* ── NAV ── */}
-      <nav style={s.nav}>
+      <nav style={s.nav} className="landing-nav">
         <div style={s.navLogo}>
-          <svg width="30" height="30" viewBox="0 0 56 56" fill="none" style={{ flexShrink: 0 }}>
-            <polygon points="28,4 50,17 50,39 28,52 6,39 6,17"
-              fill="#002147" fillOpacity="0.06" stroke="#002147" strokeWidth="1.5" />
+          <svg width="32" height="32" viewBox="0 0 56 56" fill="none" style={{ flexShrink: 0 }}>
+            {/* Outer honeycomb ring */}
+            <polygon points="28,3 51,16 51,40 28,53 5,40 5,16"
+              fill="rgba(255,215,0,0.08)" stroke="rgba(255,215,0,0.35)" strokeWidth="1.5" />
+            {/* Inner honeycomb */}
             <polygon points="28,13 42,21 42,35 28,43 14,35 14,21"
-              fill="none" stroke="#FFD700" strokeWidth="1.5" />
+              fill="rgba(255,215,0,0.12)" stroke="#FFD700" strokeWidth="1.5" />
+            {/* Center dot */}
             <circle cx="28" cy="28" r="5" fill="#FFD700" />
+            <circle cx="28" cy="28" r="2" fill="#000c1a" opacity="0.6" />
           </svg>
           <span style={s.navLogoText}>
             Grad<span style={s.navLogoAccent}>Edge</span>
           </span>
         </div>
-        <div style={s.navLinks}>
+        <div style={s.navLinks} className="landing-nav-links">
           {["About", "Features", "Community"].map(l => (
             <span key={l} style={s.navLink} className="nav-link">{l}</span>
           ))}
         </div>
-        <div style={s.navCtas}>
-          <button style={s.navSignIn} className="nav-signin" onClick={() => setSignInOpen(true)}>
+        <div style={s.navCtas} className="landing-nav-ctas">
+          <button style={s.navSignIn} className="nav-signin landing-nav-signin" onClick={() => setSignInOpen(true)}>
             Sign In
           </button>
-          <button style={s.navSignUp} className="nav-signup" onClick={() => setRegisterOpen(true)}>
+          <button style={s.navSignUp} className="nav-signup landing-nav-signup" onClick={() => setRegisterOpen(true)}>
             Sign up
           </button>
         </div>
@@ -175,7 +179,7 @@ export default function LandingPage({ isAuthenticated, onAuthSuccess }: LandingP
             Built exclusively for university students.
           </p>
 
-          <div style={s.heroCtas}>
+          <div style={s.heroCtas} className="landing-hero-ctas">
             <button style={s.ctaPrimary} className="cta-primary"
               onClick={() => setRegisterOpen(true)}>
               Sign up →
@@ -194,9 +198,9 @@ export default function LandingPage({ isAuthenticated, onAuthSuccess }: LandingP
 
       {/* ── STATS ── */}
       <section style={s.statsSection}>
-        <div style={s.statsGrid}>
+        <div style={s.statsGrid} className="landing-stats-grid">
           {STATS.map((st) => (
-            <div key={st.label} style={s.statItem}>
+            <div key={st.label} style={s.statItem} className="landing-stats-item">
               <span style={{ ...s.statValue, color: st.color }}>{st.value}</span>
               <span style={s.statLabel}>{st.label}</span>
             </div>
@@ -205,10 +209,10 @@ export default function LandingPage({ isAuthenticated, onAuthSuccess }: LandingP
       </section>
 
       {/* ── FEATURES ── */}
-      <section style={s.featuresSection}>
+      <section style={s.featuresSection} className="landing-features-section">
         <p style={s.featuresEyebrow}>⬤ WHY GRADEDGE</p>
         <h2 style={s.featuresTitle}>Built for the modern student</h2>
-        <div style={s.featuresGrid}>
+        <div style={s.featuresGrid} className="landing-features-grid">
           {FEATURES.map((f) => (
             <div key={f.title} style={{ ...s.featureCard, background: f.bg }}
               className="feature-card">
@@ -224,24 +228,24 @@ export default function LandingPage({ isAuthenticated, onAuthSuccess }: LandingP
       </section>
 
       {/* ── CTA BANNER ── */}
-      <section style={s.ctaBanner}>
+      <section style={s.ctaBanner} className="landing-cta-banner">
         <div style={s.ctaBannerOrb1} />
         <div style={s.ctaBannerOrb2} />
         <div style={s.ctaBannerInner}>
           <div style={s.ctaBannerBadge}>✦ JOIN THE COMMUNITY</div>
-          <h2 style={s.ctaBannerTitle}>Ready to get your edge?</h2>
+          <h2 style={s.ctaBannerTitle} className="landing-cta-banner-title">Ready to get your edge?</h2>
           <p style={s.ctaBannerSub}>
             Join thousands of students already inside.
           </p>
           <button style={s.ctaBannerBtn} className="cta-primary"
-            onClick={() => navigate("/auth?mode=register")}>
-            Request Access →
+            onClick={() => setRegisterOpen(true)}>
+            Sign Up →
           </button>
         </div>
       </section>
 
       {/* ── FOOTER ── */}
-      <footer style={s.footer}>
+      <footer style={s.footer} className="landing-footer">
         <span style={s.footerLogo}>
           Grad<span style={{ color: "#FFD700" }}>Edge</span>
         </span>
@@ -296,6 +300,28 @@ const css = `
   .feature-card:hover {
     transform: translateY(-8px) !important;
     box-shadow: 0 24px 64px rgba(0,33,71,0.13) !important;
+  }
+
+  /* ── Responsive ──────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .landing-nav-links { display: none !important; }
+    .landing-nav-ctas  { gap: 6px !important; }
+    .landing-nav-signin { display: none !important; }
+    .landing-nav-signup { padding: 8px 16px !important; font-size: 13px !important; }
+    .landing-stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 24px 0 !important; }
+    .landing-stats-item { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 16px !important; }
+    .landing-features-grid { grid-template-columns: 1fr !important; }
+    .landing-features-section { padding: 64px 24px !important; }
+    .landing-cta-banner { padding: 64px 24px !important; }
+    .landing-footer { padding: 20px 24px !important; flex-direction: column; gap: 6px; text-align: center; }
+    .landing-hero-ctas { flex-direction: column; align-items: center; gap: 10px !important; }
+    .landing-hero-ctas button { width: 100%; max-width: 280px; }
+  }
+
+  @media (max-width: 480px) {
+    .landing-nav { padding: 0 20px !important; }
+    .landing-stats-grid { grid-template-columns: 1fr 1fr !important; }
+    .landing-cta-banner-title { font-size: 32px !important; }
   }
 `;
 

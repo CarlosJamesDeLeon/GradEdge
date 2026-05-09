@@ -19,7 +19,7 @@ const CARD_STYLE: React.CSSProperties = {
     backgroundColor: "#000c1a",
     border: "1px solid rgba(197,160,89,0.20)",
     borderRadius: 20,
-    padding: "40px 36px 36px",
+    padding: "clamp(24px, 5vw, 40px) clamp(20px, 4vw, 36px) clamp(24px, 5vw, 36px)",
     boxShadow: `
     0 0 0 1px rgba(197,160,89,0.08),
     0 0 40px rgba(197,160,89,0.12),
@@ -30,12 +30,13 @@ const CARD_STYLE: React.CSSProperties = {
 // ── Logo mark ─────────────────────────────────────────────────────────────
 const LogoMark = () => (
     <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 28 }}>
-        <svg width="26" height="26" viewBox="0 0 56 56" fill="none">
-            <polygon points="28,4 50,17 50,39 28,52 6,39 6,17"
-                fill="#000c1a" stroke="rgba(197,160,89,0.5)" strokeWidth="1.5" />
+        <svg width="28" height="28" viewBox="0 0 56 56" fill="none">
+            <polygon points="28,3 51,16 51,40 28,53 5,40 5,16"
+                fill="rgba(197,160,89,0.08)" stroke="rgba(197,160,89,0.35)" strokeWidth="1.5" />
             <polygon points="28,13 42,21 42,35 28,43 14,35 14,21"
-                fill="none" stroke="#C5A059" strokeWidth="1.5" />
-            <circle cx="28" cy="28" r="4.5" fill="#C5A059" />
+                fill="rgba(197,160,89,0.12)" stroke="#C5A059" strokeWidth="1.5" />
+            <circle cx="28" cy="28" r="5" fill="#C5A059" />
+            <circle cx="28" cy="28" r="2" fill="#000c1a" opacity="0.6" />
         </svg>
         <span style={{
             fontFamily: "'Playfair Display', serif",

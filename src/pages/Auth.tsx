@@ -19,7 +19,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
       setError('Email is required.');
       return;
     }
-    
+
     if (!email.includes('@') || !email.endsWith('.edu')) {
       setError('A valid .edu email is required.');
       return;
@@ -48,15 +48,15 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
       <div className="w-full max-w-sm relative">
         {/* Subtle gold ambient shadow - exactly one defining effect */}
         <div className="absolute -inset-0.5 bg-[#FFD700] opacity-20 blur-2xl rounded-2xl pointer-events-none transition-all duration-1000"></div>
-        
+
         <div className="relative bg-white shadow-sm ring-1 ring-black/5 rounded-2xl p-8 sm:p-10 transition-all">
           <div className="mb-8">
             <div className="font-bold text-xl text-[#002147] tracking-tight mb-6 cursor-default">
               Grad<span className="text-[#FFD700]">Edge</span>
             </div>
-            
+
             <h1 className="text-2xl font-medium tracking-tight text-slate-900 mb-1.5">
-              {isLogin ? 'Welcome back.' : 'Request access.'}
+              {isLogin ? 'Welcome back.' : 'Sign Up.'}
             </h1>
             <p className="text-sm text-slate-500">
               {isLogin ? 'Enter your credentials to continue.' : 'Create your verified account.'}
@@ -134,7 +134,7 @@ const Auth: React.FC<AuthProps> = ({ onAuthSuccess }) => {
               type="button"
               className="text-xs text-slate-500 hover:text-[#002147] transition-colors focus:outline-none"
             >
-              {isLogin ? "Don't have an account? Request access." : 'Already have access? Log in.'}
+              {isLogin ? "Don't have an account? Sign Up." : 'Already have access? Log in.'}
             </button>
           </div>
         </div>

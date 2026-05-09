@@ -20,7 +20,9 @@ export default {
         'text-secondary': '#64748B'
       },
       fontFamily: {
-        sans: ['Inter', 'Roboto', 'sans-serif'],
+        sans: ['DM Sans', 'sans-serif'],
+        serif: ['Playfair Display', 'serif'],
+        display: ['Playfair Display', 'serif'],
       },
       keyframes: {
         'prestige-pulse': {
