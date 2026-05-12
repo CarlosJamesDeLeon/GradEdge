@@ -30,7 +30,7 @@ const MOCK_THREADS = [
     major: 'Business Admin',
     time: '4 hours ago',
     subject: 'Principles of Marketing',
-    content: 'What are the most effective KPIs for measuring social media organic growth in 2026 undergraduate study groups?',
+    content: 'Hi guys! Gwapo lagi to si Sir Pardillo sa?',
     verifiedCount: 15,
     comments: 1,
     isVerifiedAnswer: false,
@@ -46,7 +46,7 @@ const CampusFeed: React.FC = () => {
   const [threads, setThreads] = useState(MOCK_THREADS);
 
   const incrementCommentCount = (postId: number) => {
-    setThreads(prev => prev.map(t => 
+    setThreads(prev => prev.map(t =>
       t.id === postId ? { ...t, comments: t.comments + 1 } : t
     ));
   };
@@ -54,8 +54,8 @@ const CampusFeed: React.FC = () => {
   const handleUpvote = (postId: number) => {
     setThreads(prev => prev.map(t => {
       if (t.id === postId) {
-        return { 
-          ...t, 
+        return {
+          ...t,
           upvotes: t.hasUpvoted ? t.upvotes - 1 : t.upvotes + 1,
           hasUpvoted: !t.hasUpvoted
         };
@@ -70,8 +70,8 @@ const CampusFeed: React.FC = () => {
       <div className="lg:col-span-2">
         <header className="mb-10">
           <div className="flex items-center space-x-2 mb-2">
-              <div className="h-2 w-8 bg-[#FFD700] rounded-full" />
-              <span className="text-[#FFD700] font-black uppercase tracking-widest text-xs">Academic Feed</span>
+            <div className="h-2 w-8 bg-[#FFD700] rounded-full" />
+            <span className="text-[#FFD700] font-black uppercase tracking-widest text-xs">Academic Feed</span>
           </div>
           <h1 className="text-4xl font-playfair font-black text-[#F0EDE6] transition-colors">
             Subject Threads
@@ -81,8 +81,8 @@ const CampusFeed: React.FC = () => {
 
         {/* Identity-Aware Post Box */}
         <div className="mb-10">
-          <IdentityBox 
-            userName="Janet Doe" 
+          <IdentityBox
+            userName="Janet Doe"
             initialAnonymous={isAnonymous}
             onPost={(content, anon) => console.log('Posting:', { content, anon })}
           />
@@ -92,19 +92,19 @@ const CampusFeed: React.FC = () => {
         <div className="space-y-8">
           {threads.map((thread) => (
             <article key={thread.id} className={cn(
-                "rounded-3xl p-8 border transition-all duration-500 group bg-[#001225]",
-                thread.isVerifiedAnswer ? "border-[#FFD700] shadow-xl shadow-[#FFD700]/5" : "border-[#C5A059]/15 shadow-sm"
+              "rounded-3xl p-8 border transition-all duration-500 group bg-[#001225]",
+              thread.isVerifiedAnswer ? "border-[#FFD700] shadow-xl shadow-[#FFD700]/5" : "border-[#C5A059]/15 shadow-sm"
             )}>
               <div className="flex justify-between items-start mb-6">
                 <div className="flex space-x-4">
-                  <Avatar 
-                    name={thread.author} 
-                    isAnonymous={thread.isAnonymous} 
+                  <Avatar
+                    name={thread.author}
+                    isAnonymous={thread.isAnonymous}
                     size="lg"
                   />
                   <div>
                     <h3 className="font-bold text-[#F0EDE6] text-lg">
-                        {thread.isAnonymous ? "Anonymous Member" : thread.author}
+                      {thread.isAnonymous ? "Anonymous Member" : thread.author}
                     </h3>
                     <div className="flex items-center text-sm font-semibold text-gray-400 space-x-3 mt-1 uppercase tracking-wider">
                       <span>{thread.isAnonymous ? "Safe Haven Poster" : thread.subject}</span>
@@ -114,13 +114,13 @@ const CampusFeed: React.FC = () => {
                   </div>
                 </div>
                 {thread.isVerifiedAnswer && (
-                    <div className="bg-[#FFD700]/10 text-[#FFD700] p-2 rounded-xl border border-[#FFD700]/20 flex items-center space-x-1">
-                        <Star className="h-4 w-4 fill-current" />
-                        <span className="text-xs font-black">TOP ACCURACY</span>
-                    </div>
+                  <div className="bg-[#FFD700]/10 text-[#FFD700] p-2 rounded-xl border border-[#FFD700]/20 flex items-center space-x-1">
+                    <Star className="h-4 w-4 fill-current" />
+                    <span className="text-xs font-black">TOP ACCURACY</span>
+                  </div>
                 )}
               </div>
-              
+
               <p className="text-[#F0EDE6]/80 text-xl font-medium mb-8 leading-relaxed">
                 {thread.content}
               </p>
@@ -134,12 +134,12 @@ const CampusFeed: React.FC = () => {
               </div>
 
               <div className="flex items-center space-x-8 pt-6 border-t border-[#C5A059]/10">
-                <button 
+                <button
                   onClick={() => handleUpvote(thread.id)}
                   className={cn(
                     "flex items-center space-x-2 transition-all font-black",
-                    thread.hasUpvoted 
-                      ? "text-[#C5A059] bg-[#C5A059]/10 px-4 py-1.5 rounded-full border border-[#C5A059]/30" 
+                    thread.hasUpvoted
+                      ? "text-[#C5A059] bg-[#C5A059]/10 px-4 py-1.5 rounded-full border border-[#C5A059]/30"
                       : "text-gray-400 hover:text-[#C5A059] px-4 py-1.5"
                   )}
                 >
@@ -147,13 +147,13 @@ const CampusFeed: React.FC = () => {
                   <span>{thread.upvotes}</span>
                 </button>
                 <button className={cn(
-                    "flex items-center space-x-2 transition-colors font-bold",
-                    thread.verifiedCount > 20 ? "text-[#FFD700]" : "text-gray-400 hover:text-[#FFD700]"
+                  "flex items-center space-x-2 transition-colors font-bold",
+                  thread.verifiedCount > 20 ? "text-[#FFD700]" : "text-gray-400 hover:text-[#FFD700]"
                 )}>
                   <ShieldCheck className={cn("h-6 w-6", thread.verifiedCount > 20 && "fill-current")} />
                   <span>{thread.verifiedCount} Verified</span>
                 </button>
-                <button 
+                <button
                   onClick={() => setExpandedPostId(expandedPostId === thread.id ? null : thread.id)}
                   className={cn(
                     "flex items-center space-x-2 transition-colors font-bold",
@@ -179,27 +179,27 @@ const CampusFeed: React.FC = () => {
 
       {/* Right Sidebar Widgets */}
       <div className="lg:col-span-1 space-y-8">
-          <MyReminders />
+        <MyReminders />
 
-          {/* Mentorship Bridge Preview */}
-          <div className="rounded-3xl p-8 border border-[#C5A059]/15 transition-all duration-500 bg-[#001225]">
-              <div className="flex items-center space-x-2 mb-6 text-[#C5A059]">
-                  <Briefcase className="h-6 w-6" />
-                  <h3 className="font-playfair font-black uppercase tracking-widest text-sm text-[#F0EDE6]">Career Bridge</h3>
-              </div>
-              <p className="text-sm font-semibold text-[#F0EDE6]/60 mb-6">3 Alumni from your major are online and ready to review resumes.</p>
-              <div className="flex -space-x-3 mb-8">
-                  {[1,2,3].map(i => (
-                      <div key={i} className="h-10 w-10 rounded-full border-4 border-[#001225] bg-[#000c1a] overflow-hidden" />
-                  ))}
-                  <div className="h-10 w-10 rounded-full border-4 border-[#001225] bg-[#C5A059] flex items-center justify-center text-[10px] font-black text-[#000c1a]">
-                      +12
-                  </div>
-              </div>
-              <button className="w-full py-4 border-2 border-[#C5A059]/20 rounded-2xl font-black text-xs uppercase tracking-widest text-[#C5A059] hover:bg-[#C5A059] hover:text-[#000c1a] transition-all">
-                  Join Bridge
-              </button>
+        {/* Mentorship Bridge Preview */}
+        <div className="rounded-3xl p-8 border border-[#C5A059]/15 transition-all duration-500 bg-[#001225]">
+          <div className="flex items-center space-x-2 mb-6 text-[#C5A059]">
+            <Briefcase className="h-6 w-6" />
+            <h3 className="font-playfair font-black uppercase tracking-widest text-sm text-[#F0EDE6]">Career Bridge</h3>
           </div>
+          <p className="text-sm font-semibold text-[#F0EDE6]/60 mb-6">3 Alumni from your major are online and ready to review resumes.</p>
+          <div className="flex -space-x-3 mb-8">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="h-10 w-10 rounded-full border-4 border-[#001225] bg-[#000c1a] overflow-hidden" />
+            ))}
+            <div className="h-10 w-10 rounded-full border-4 border-[#001225] bg-[#C5A059] flex items-center justify-center text-[10px] font-black text-[#000c1a]">
+              +12
+            </div>
+          </div>
+          <button className="w-full py-4 border-2 border-[#C5A059]/20 rounded-2xl font-black text-xs uppercase tracking-widest text-[#C5A059] hover:bg-[#C5A059] hover:text-[#000c1a] transition-all">
+            Join Bridge
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -200,8 +200,8 @@ const MentorshipBridge: React.FC = () => {
                             <div className="flex items-center space-x-4 mb-6">
                                 <Avatar name="Current User" isAnonymous={false} size="lg" />
                                 <div>
-                                    <h3 className="text-xl font-bold text-[#F0EDE6]">[User Name]</h3>
-                                    <p className="text-[#F0EDE6]/60 text-sm mt-1">[User Program/Major]</p>
+                                    <h3 className="text-xl font-bold text-[#F0EDE6]">[Captain Umerica]</h3>
+                                    <p className="text-[#F0EDE6]/60 text-sm mt-1">[UI/UX Designer]</p>
                                 </div>
                             </div>
 
